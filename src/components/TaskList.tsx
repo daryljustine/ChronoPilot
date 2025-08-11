@@ -441,8 +441,18 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
                             className="w-full px-3 py-2 border rounded-lg text-base bg-white dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           >
                             <option value="daily"> Daily progress - Work a bit each day</option>
-                            <option value="3x-week"> Few times per week - Every 2-3 days</option>
-                            <option value="weekly"> Weekly sessions - Once per week</option>
+                            <option
+                              value="3x-week"
+                              disabled={frequencyRestrictions.disable3xWeek}
+                            >
+                               Few times per week - Every 2-3 days{frequencyRestrictions.disable3xWeek ? ' (Need 1+ week)' : ''}
+                            </option>
+                            <option
+                              value="weekly"
+                              disabled={frequencyRestrictions.disableWeekly}
+                            >
+                               Weekly sessions - Once per week{frequencyRestrictions.disableWeekly ? ' (Need 2+ weeks)' : ''}
+                            </option>
                             <option value="flexible"> When I have time - Flexible scheduling</option>
                           </select>
 
