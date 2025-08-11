@@ -197,6 +197,49 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
     }
   }, [frequencyRestrictions.disableWeekly, frequencyRestrictions.disable3xWeek, formData.targetFrequency]);
 
+  // Check time slot availability for one-sitting tasks on deadline day
+  const oneSittingTimeSlotCheck = useMemo(() => {
+    if (!formData.isOneTimeTask || !formData.deadline) {
+      return { hasAvailableSlot: true, message: '' };
+    }
+
+    const estimatedHours = convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes);
+    const deadlineDate = formData.deadline;
+
+    // Find existing sessions on deadline day
+    const deadlinePlan = existingStudyPlans.find(plan => plan.date === deadlineDate);
+    const existingSessions = deadlinePlan ? deadlinePlan.plannedTasks : [];
+
+    // Find commitments that apply to the deadline day
+    const applicableCommitments = fixedCommitments.filter(commitment =>
+      doesCommitmentApplyToDate(commitment, deadlineDate)
+    );
+
+    // Get effective study window for the deadline day
+    const effectiveWindow = getEffectiveStudyWindow(deadlineDate, userSettings);
+
+    // Try to find an available time slot
+    const availableSlot = findNextAvailableTimeSlot(
+      estimatedHours,
+      existingSessions,
+      applicableCommitments,
+      effectiveWindow.startHour,
+      effectiveWindow.endHour,
+      userSettings.bufferTimeBetweenSessions || 0,
+      deadlineDate,
+      userSettings
+    );
+
+    if (!availableSlot) {
+      return {
+        hasAvailableSlot: false,
+        message: `No available time slot found on deadline day (${deadlineDate}) for a ${estimatedHours}h session. The day may be fully booked with existing sessions and commitments.`
+      };
+    }
+
+    return { hasAvailableSlot: true, message: '' };
+  }, [formData.isOneTimeTask, formData.deadline, formData.estimatedHours, formData.estimatedMinutes, existingStudyPlans, fixedCommitments, userSettings]);
+
   // When task type changes, reset helper state
   useEffect(() => {
     setEstComplexity('');
