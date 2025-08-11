@@ -120,7 +120,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   const isOneSittingTooLong = formData.isOneTimeTask && estimatedDecimalHours > userSettings.dailyAvailableHours;
   const isFormValid = isTitleValid && isTitleLengthValid && isDeadlineValid &&
                    isEstimatedValid && isEstimatedReasonable && isImpactValid &&
-                   isCustomCategoryValid && !isDeadlineRequiredForOneSitting && isStartDateValid;
+                   isCustomCategoryValid && !isDeadlineRequiredForOneSitting && isStartDateValid && !isFormInvalid;
 
   // Frequency vs. deadline feasibility warning (inline preview)
   const deadlineConflict = useMemo(() => {
