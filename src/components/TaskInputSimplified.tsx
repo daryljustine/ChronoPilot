@@ -238,15 +238,15 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     if (!isImpactValid) errors.push('Please select task importance');
     if (!isCustomCategoryValid) errors.push('Custom category must be between 1-50 characters');
     if (isDeadlineRequiredForOneSitting) errors.push('One-sitting tasks require a deadline to be scheduled properly');
-    if (!isStartDateValid) errors.push('Start date cannot be in the past');
+    if (!isStartDateValid && !formData.isOneTimeTask) errors.push('Start date cannot be in the past');
+    if (isOneSittingTooLong) errors.push(`One-sitting task (${estimatedDecimalHours}h) exceeds your daily available hours (${userSettings.dailyAvailableHours}h)`);
+    if (isOneSittingNoTimeSlot) errors.push(oneSittingTimeSlotCheck.message);
     return errors;
   };
 
   const getValidationWarnings = (): string[] => {
     const warnings: string[] = [];
-    if (isOneSittingTooLong) {
-      warnings.push(` This one-sitting task (${estimatedDecimalHours}h) exceeds your daily available hours (${userSettings.dailyAvailableHours}h). Consider reducing the estimated time, increasing your daily hours in settings, or unchecking "one-sitting" to allow splitting.`);
-    }
+    // Move one-sitting warnings to errors since they should prevent task creation
     return warnings;
   };
 
