@@ -441,9 +441,6 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
       deadlineType: 'hard',
       schedulingPreference: 'consistent',
       targetFrequency: 'daily', // Reset to daily default
-      respectFrequencyForDeadlines: true,
-      preferredTimeSlots: [],
-      minWorkBlock: 30,
       maxSessionLength: 2,
       isOneTimeTask: false,
       startDate: today,
