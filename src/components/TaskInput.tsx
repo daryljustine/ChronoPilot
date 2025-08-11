@@ -311,7 +311,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
     };
 
     return checkFrequencyDeadlineConflict(taskForCheck, userSettings);
-  }, [formData.deadline, formData.estimatedHours, formData.estimatedMinutes, formData.targetFrequency, formData.deadlineType, formData.minWorkBlock, formData.startDate, userSettings]);
+  }, [formData.deadline, formData.estimatedHours, formData.estimatedMinutes, formData.targetFrequency, formData.deadlineType, formData.startDate, userSettings]);
 
   // Enhanced validation with better error messages
   const isTitleValid = formData.title.trim().length > 0;
