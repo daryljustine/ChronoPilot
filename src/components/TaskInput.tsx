@@ -1073,7 +1073,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
                   <li><strong>Fill available time:</strong> Scheduled after deadline tasks are placed</li>
                   <li><strong>Consistent progress:</strong> Spread across days based on your frequency preference</li>
                   <li><strong>Flexible scheduling:</strong> Can be moved or skipped without affecting critical deadlines</li>
-                  <li><strong>Respect preferences:</strong> Uses your preferred time slots and session lengths</li>
+                  <li><strong>Respect preferences:</strong> Uses your frequency preferences and maximum session lengths for no-deadline tasks</li>
                 </ul>
               </div>
 
