@@ -754,37 +754,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
                     </div>
                   )}
 
-                  {/* Preferred Time Slots (for no-deadline tasks) */}
-                  {formData.deadlineType === 'none' && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                        Preferred time slots
-                      </label>
-                      <div className="flex gap-2">
-                        {['morning', 'afternoon', 'evening'].map(timeSlot => (
-                          <label key={timeSlot} className="flex items-center gap-1">
-                            <input
-                              type="checkbox"
-                              checked={formData.preferredTimeSlots.includes(timeSlot as any)}
-                              onChange={e => {
-                                const timeSlots = formData.preferredTimeSlots;
-                                if (e.target.checked) {
-                                  setFormData(f => ({ ...f, preferredTimeSlots: [...timeSlots, timeSlot as any] }));
-                                } else {
-                                  setFormData(f => ({ ...f, preferredTimeSlots: timeSlots.filter(t => t !== timeSlot) }));
-                                }
-                              }}
-                              className="text-violet-600"
-                            />
-                            <span className="capitalize text-xs text-gray-700 dark:text-gray-300">{timeSlot}</span>
-                          </label>
-                        ))}
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        For flexible tasks, prefer these time periods
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
