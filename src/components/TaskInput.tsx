@@ -629,20 +629,30 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
                   </div>
 
                   {/* Start Date Selection */}
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Start date</label>
-                    <input
-                      type="date"
-                      min={today}
-                      value={formData.startDate}
-                      onChange={e => setFormData(f => ({ ...f, startDate: e.target.value || today }))}
-                      className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-white dark:bg-gray-800 dark:text-white ${!isStartDateNotPast && formData.startDate ? 'border-red-500 focus:ring-red-500' : ''}`}
-                    />
-                    {!isStartDateNotPast && formData.startDate && (
-                      <div className="text-red-600 text-xs mt-1">Start date cannot be in the past. Please select today or a future date.</div>
-                    )}
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Default is today. Sessions will not be scheduled before this date.</div>
-                  </div>
+                  {!formData.isOneTimeTask && (
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Start date</label>
+                      <input
+                        type="date"
+                        min={today}
+                        value={formData.startDate}
+                        onChange={e => setFormData(f => ({ ...f, startDate: e.target.value || today }))}
+                        className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-white dark:bg-gray-800 dark:text-white ${!isStartDateNotPast && formData.startDate ? 'border-red-500 focus:ring-red-500' : ''}`}
+                      />
+                      {!isStartDateNotPast && formData.startDate && (
+                        <div className="text-red-600 text-xs mt-1">Start date cannot be in the past. Please select today or a future date.</div>
+                      )}
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Default is today. Sessions will not be scheduled before this date.</div>
+                    </div>
+                  )}
+
+                  {formData.isOneTimeTask && (
+                    <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                      <div className="text-sm text-blue-800 dark:text-blue-200">
+                        📅 <strong>One-sitting tasks are always scheduled on the deadline day</strong> regardless of importance level. Start date is not applicable.
+                      </div>
+                    </div>
+                  )}
 
                   {/* Deadline Type Selection */}
                   <div className="space-y-2 mb-4">
