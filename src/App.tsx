@@ -1011,27 +1011,97 @@ function App() {
         const updatedTasks = tasks.map(task =>
             task.id === taskId ? { ...task, ...updates } : task
         );
-        
-        // Check if estimated time changed and adjust preserved manual schedules
-        const timeChanged = originalTask && updates.estimatedHours !== undefined && 
+
+        // Check if estimated time changed and adjust sessions intelligently
+        const timeChanged = originalTask && updates.estimatedHours !== undefined &&
                            originalTask.estimatedHours !== updates.estimatedHours;
-        
+
         if (timeChanged && originalTask) {
-            const timeRatio = updates.estimatedHours! / (originalTask.estimatedHours || 1);
-            // Update preserved manual session durations proportionally
+            const oldEstimatedHours = originalTask.estimatedHours;
+            const newEstimatedHours = updates.estimatedHours!;
+
+            // Calculate completed/skipped hours to preserve them
+            let completedHours = 0;
+            let remainingSessions: any[] = [];
+
+            studyPlans.forEach(plan => {
+                plan.plannedTasks.forEach(session => {
+                    if (session.taskId === taskId) {
+                        if (session.done || session.status === 'completed' || session.status === 'skipped') {
+                            // This session is completed/skipped - preserve it and count its hours
+                            completedHours += session.allocatedHours;
+                        } else {
+                            // This is a remaining session that can be adjusted
+                            remainingSessions.push({...session, planDate: plan.date});
+                        }
+                    }
+                });
+            });
+
+            // Calculate new remaining hours after accounting for completed work
+            const newRemainingHours = Math.max(0, newEstimatedHours - completedHours);
+
+            if (remainingSessions.length > 0 && newRemainingHours > 0) {
+                // Distribute the new remaining hours across the remaining sessions
+                const hoursPerSession = newRemainingHours / remainingSessions.length;
+
+                // Update the remaining sessions with new durations
+                studyPlans.forEach(plan => {
+                    plan.plannedTasks.forEach(session => {
+                        if (session.taskId === taskId && !session.done && session.status !== 'completed' && session.status !== 'skipped') {
+                            // Update session duration
+                            session.allocatedHours = hoursPerSession;
+
+                            // Update end time based on new duration
+                            const [startHour, startMinute] = session.startTime.split(':').map(Number);
+                            const durationMinutes = Math.round(hoursPerSession * 60);
+                            const newEndTime = new Date();
+                            newEndTime.setHours(startHour, startMinute + durationMinutes, 0, 0);
+                            session.endTime = `${newEndTime.getHours().toString().padStart(2, '0')}:${newEndTime.getMinutes().toString().padStart(2, '0')}`;
+                        }
+                    });
+                });
+            } else if (remainingSessions.length > 0 && newRemainingHours === 0) {
+                // New estimated time is less than or equal to completed work - remove remaining sessions
+                studyPlans.forEach(plan => {
+                    plan.plannedTasks = plan.plannedTasks.filter(session => {
+                        if (session.taskId === taskId) {
+                            // Keep completed/skipped sessions, remove others
+                            return session.done || session.status === 'completed' || session.status === 'skipped';
+                        }
+                        return true;
+                    });
+                });
+
+                // Mark task as completed if all remaining work is done
+                if (completedHours >= newEstimatedHours) {
+                    updatedTasks.forEach(task => {
+                        if (task.id === taskId) {
+                            task.status = 'completed';
+                            task.estimatedHours = completedHours; // Set to actual completed hours
+                        }
+                    });
+                }
+            }
+
+            // Also handle manual override sessions proportionally (existing logic)
             studyPlans.forEach(plan => {
                 plan.plannedTasks.forEach(session => {
                     if (session.taskId === taskId && session.isManualOverride && session.originalTime && session.originalDate) {
-                        const [startHour, startMinute] = session.startTime.split(':').map(Number);
-                        const [endHour, endMinute] = session.endTime.split(':').map(Number);
-                        const currentDuration = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
-                        const newDuration = Math.max(15, Math.round(currentDuration * timeRatio)); // Minimum 15 minutes
-                        
-                        // Update the end time based on new duration
-                        const newEndTime = new Date();
-                        newEndTime.setHours(startHour, startMinute + newDuration, 0, 0);
-                        session.endTime = `${newEndTime.getHours().toString().padStart(2, '0')}:${newEndTime.getMinutes().toString().padStart(2, '0')}`;
-                        session.allocatedHours = newDuration / 60;
+                        // Only adjust if this session wasn't already handled above (i.e., it's not completed)
+                        if (!session.done && session.status !== 'completed' && session.status !== 'skipped') {
+                            const [startHour, startMinute] = session.startTime.split(':').map(Number);
+                            const [endHour, endMinute] = session.endTime.split(':').map(Number);
+                            const currentDuration = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
+                            const timeRatio = newEstimatedHours / (oldEstimatedHours || 1);
+                            const newDuration = Math.max(15, Math.round(currentDuration * timeRatio)); // Minimum 15 minutes
+
+                            // Update the end time based on new duration
+                            const newEndTime = new Date();
+                            newEndTime.setHours(startHour, startMinute + newDuration, 0, 0);
+                            session.endTime = `${newEndTime.getHours().toString().padStart(2, '0')}:${newEndTime.getMinutes().toString().padStart(2, '0')}`;
+                            session.allocatedHours = newDuration / 60;
+                        }
                     }
                 });
             });
