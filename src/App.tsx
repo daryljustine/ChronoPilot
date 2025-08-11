@@ -1109,26 +1109,34 @@ function App() {
         
         // Generate new study plan with updated tasks, preserving manual schedules
         const { plans: newPlans } = generateNewStudyPlanWithPreservation(updatedTasks, settings, fixedCommitments, studyPlans);
-        
+
         // Preserve session status from previous plan
         newPlans.forEach(plan => {
             const prevPlan = studyPlans.find(p => p.date === plan.date);
             if (!prevPlan) return;
-            
+
             // Preserve session status and properties
             plan.plannedTasks.forEach(session => {
                 const prevSession = prevPlan.plannedTasks.find(s => s.taskId === session.taskId && s.sessionNumber === session.sessionNumber);
                 if (prevSession) {
-                    // Preserve done sessions
+                    // Preserve done sessions completely - including duration
                     if (prevSession.done) {
                         session.done = true;
                         session.status = prevSession.status;
                         session.actualHours = prevSession.actualHours;
                         session.completedAt = prevSession.completedAt;
+                        // Critical: preserve the duration and timing for completed sessions
+                        session.allocatedHours = prevSession.allocatedHours;
+                        session.startTime = prevSession.startTime;
+                        session.endTime = prevSession.endTime;
                     }
-                    // Preserve skipped sessions
+                    // Preserve skipped sessions completely - including duration
                     else if (prevSession.status === 'skipped') {
                         session.status = 'skipped';
+                        // Also preserve duration for skipped sessions
+                        session.allocatedHours = prevSession.allocatedHours;
+                        session.startTime = prevSession.startTime;
+                        session.endTime = prevSession.endTime;
                     }
                     // Preserve rescheduled sessions
                     else if (prevSession.originalTime && prevSession.originalDate) {
@@ -1140,7 +1148,7 @@ function App() {
                 }
             });
         });
-        
+
         setTasks(updatedTasks);
         setStudyPlans(newPlans);
         setLastPlanStaleReason("task");
