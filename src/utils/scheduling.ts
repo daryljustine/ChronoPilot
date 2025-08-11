@@ -1126,12 +1126,12 @@ export const generateNewStudyPlan = (
         }
       }
       
-      // Recalculate scheduled hours after global redistribution (excluding skipped sessions)
+      // Recalculate scheduled hours after global redistribution (excluding skipped and completed sessions)
       taskScheduledHours = {};
     for (const plan of studyPlans) {
       for (const session of plan.plannedTasks) {
-        // Skip sessions that are marked as skipped - they shouldn't count towards scheduled hours
-        if (session.status !== 'skipped') {
+        // Skip sessions that are marked as skipped or completed - they shouldn't count towards scheduled hours
+        if (session.status !== 'skipped' && !session.done && session.status !== 'completed') {
           taskScheduledHours[session.taskId] = (taskScheduledHours[session.taskId] || 0) + session.allocatedHours;
         }
       }
