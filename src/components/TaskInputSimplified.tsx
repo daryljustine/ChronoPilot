@@ -71,16 +71,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     }
   }, [formData.isOneTimeTask]);
 
-  // Auto-adjust frequency when restrictions change
-  useEffect(() => {
-    if (frequencyRestrictions.disableWeekly && formData.targetFrequency === 'weekly') {
-      setFormData(f => ({ ...f, targetFrequency: 'daily' }));
-    }
-    if (frequencyRestrictions.disable3xWeek && formData.targetFrequency === '3x-week') {
-      setFormData(f => ({ ...f, targetFrequency: 'daily' }));
-    }
-  }, [frequencyRestrictions.disableWeekly, frequencyRestrictions.disable3xWeek, formData.targetFrequency]);
-
   // Validation functions
   const convertToDecimalHours = (hours: string, minutes: string): number => {
     return parseInt(hours || '0') + parseInt(minutes || '0') / 60;
