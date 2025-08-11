@@ -100,40 +100,34 @@ function App() {
 
     // Gamification state
     const [showGamificationPanel, setShowGamificationPanel] = useState(false);
-    const [gamificationData, setGamificationData] = useState<GamificationData>(() => {
-        const saved = localStorage.getItem('timepilot-gamification');
-        if (saved) {
-            return JSON.parse(saved);
-        }
-        return {
-            achievements: ACHIEVEMENTS,
-            unlockedAchievements: [],
-            stats: {
-                totalStudyHours: 0,
-                totalTasksCompleted: 0,
-                currentStreak: 0,
-                longestStreak: 0,
-                perfectWeeks: 0,
-                earlyFinishes: 0,
-                totalSessions: 0,
-                averageSessionLength: 0,
-                favoriteStudyTime: 'morning' as const,
-                efficiencyScore: 100,
-                level: 1,
-                totalPoints: 0,
-                joinedDate: new Date().toISOString(),
-                lastActiveDate: new Date().toISOString()
-            },
-            streak: {
-                current: 0,
-                longest: 0,
-                lastStudyDate: '',
-                streakDates: []
-            },
-            milestones: [],
-            level: calculateLevel(0),
-            recentUnlocks: []
-        };
+    const [gamificationData, setGamificationData] = useState<GamificationData>({
+        achievements: ACHIEVEMENTS,
+        unlockedAchievements: [],
+        stats: {
+            totalStudyHours: 0,
+            totalTasksCompleted: 0,
+            currentStreak: 0,
+            longestStreak: 0,
+            perfectWeeks: 0,
+            earlyFinishes: 0,
+            totalSessions: 0,
+            averageSessionLength: 0,
+            favoriteStudyTime: 'morning' as const,
+            efficiencyScore: 100,
+            level: 1,
+            totalPoints: 0,
+            joinedDate: new Date().toISOString(),
+            lastActiveDate: new Date().toISOString()
+        },
+        streak: {
+            current: 0,
+            longest: 0,
+            lastStudyDate: '',
+            streakDates: []
+        },
+        milestones: [],
+        level: calculateLevel(0),
+        recentUnlocks: []
     });
     const [achievementNotification, setAchievementNotification] = useState<Achievement | null>(null);
     const [motivationalToast, setMotivationalToast] = useState<{
