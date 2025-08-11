@@ -2640,13 +2640,13 @@ export const redistributeAfterTaskDeletion = (
     let taskScheduledHours: { [taskId: string]: number } = {};
     for (const plan of studyPlans) {
       for (const session of plan.plannedTasks) {
-        // Skip sessions that are marked as skipped - they shouldn't count towards scheduled hours
-        if (session.status !== 'skipped') {
+        // Skip sessions that are marked as skipped or completed - they shouldn't count towards scheduled hours
+        if (session.status !== 'skipped' && !session.done && session.status !== 'completed') {
           taskScheduledHours[session.taskId] = (taskScheduledHours[session.taskId] || 0) + session.allocatedHours;
         }
       }
     }
-    
+
     // Find tasks with unscheduled hours
     const tasksWithUnscheduledHours = tasksEven.filter(task => {
       const scheduledHours = taskScheduledHours[task.id] || 0;
