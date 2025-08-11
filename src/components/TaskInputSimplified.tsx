@@ -213,7 +213,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
       startDate: formData.startDate,
     };
     return checkFrequencyDeadlineConflict(taskForCheck as any, userSettings);
-  }, [formData.deadline, formData.deadlineType, formData.targetFrequency, formData.minWorkBlock, formData.startDate, estimatedDecimalHours, userSettings]);
+  }, [formData.deadline, formData.deadlineType, formData.targetFrequency, formData.startDate, estimatedDecimalHours, userSettings]);
 
   // Low-priority with urgent deadline warning
   const isLowPriorityUrgent = useMemo(() => {
