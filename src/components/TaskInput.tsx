@@ -368,18 +368,24 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
       errors.push('Custom category must be between 1-50 characters');
     }
     
-    if (!isStartDateNotPast) {
+    if (!isStartDateNotPast && !formData.isOneTimeTask) {
       errors.push('Start date cannot be in the past');
     }
-    
+
+    if (isOneSittingTooLong) {
+      errors.push(`One-sitting task (${totalTime}h) exceeds your daily available hours (${userSettings.dailyAvailableHours}h)`);
+    }
+
+    if (isOneSittingNoTimeSlot) {
+      errors.push(oneSittingTimeSlotCheck.message);
+    }
+
     return errors;
   };
 
   const getValidationWarnings = () => {
     const warnings = [];
-    if (isOneSittingTooLong) {
-      warnings.push(` This one-sitting task (${totalTime}h) exceeds your daily available hours (${userSettings.dailyAvailableHours}h). Consider reducing the estimated time, increasing your daily hours in settings, or unchecking "one-sitting" to allow splitting.`);
-    }
+    // Move one-sitting warnings to errors since they should prevent task creation
     return warnings;
   };
 
