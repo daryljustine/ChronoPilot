@@ -572,6 +572,26 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
                     );
                   })}
                 </div>
+
+                {/* Frequency Restriction Warnings */}
+                {(frequencyRestrictions.disableWeekly || frequencyRestrictions.disable3xWeek) && (
+                  <div className="mt-2 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <span className="text-orange-500 text-sm">⚠️</span>
+                      <div className="text-xs text-orange-700 dark:text-orange-200">
+                        <div className="font-medium mb-1">Frequency Options Limited</div>
+                        {frequencyRestrictions.disableWeekly && (
+                          <div className="mb-1">• Weekly sessions need at least 2 weeks between start date and deadline</div>
+                        )}
+                        {frequencyRestrictions.disable3xWeek && (
+                          <div className="mb-1">• 2-3 days frequency needs at least 1 week between start date and deadline</div>
+                        )}
+                        <div className="text-orange-600 dark:text-orange-300 font-medium">Consider extending your deadline or using daily progress instead.</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Show warning if frequency conflicts with deadline */}
                 {deadlineConflict.hasConflict && (
                   <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded text-xs text-amber-700 dark:text-amber-200">
