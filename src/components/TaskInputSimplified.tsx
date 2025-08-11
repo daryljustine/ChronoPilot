@@ -193,9 +193,15 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   const isDeadlineRequiredForOneSitting = formData.isOneTimeTask && (!formData.deadline || formData.deadline.trim() === '');
   const estimatedDecimalHours = convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes);
   const isOneSittingTooLong = formData.isOneTimeTask && estimatedDecimalHours > userSettings.dailyAvailableHours;
+  const isOneSittingNoTimeSlot = formData.isOneTimeTask && !oneSittingTimeSlotCheck.hasAvailableSlot;
+
+  // For one-sitting tasks, we ignore start date validation since they don't use start dates
+  const effectiveStartDateValid = formData.isOneTimeTask ? true : isStartDateValid;
+
   const isFormValid = isTitleValid && isTitleLengthValid && isDeadlineValid &&
                    isEstimatedValid && isEstimatedReasonable && isImpactValid &&
-                   isCustomCategoryValid && !isDeadlineRequiredForOneSitting && isStartDateValid && !isFormInvalid;
+                   isCustomCategoryValid && !isDeadlineRequiredForOneSitting && effectiveStartDateValid &&
+                   !isFormInvalid && !isOneSittingTooLong && !isOneSittingNoTimeSlot;
 
   // Frequency vs. deadline feasibility warning (inline preview)
   const deadlineConflict = useMemo(() => {
