@@ -377,11 +377,15 @@ export function findNextAvailableTimeSlot(
     effectiveEndHour = effectiveWindow.endHour;
   }
   // Build a list of all busy intervals (sessions and commitments)
+  // Exclude completed sessions as they don't block new scheduling
   const busyIntervals: Array<{ start: number; end: number }> = [];
   existingSessions.forEach(s => {
-    const [sh, sm] = s.startTime.split(":").map(Number);
-    const [eh, em] = s.endTime.split(":").map(Number);
-    busyIntervals.push({ start: sh * 60 + (sm || 0), end: eh * 60 + (em || 0) });
+    // Skip completed sessions as they don't block new time slots
+    if (!s.done && s.status !== 'completed') {
+      const [sh, sm] = s.startTime.split(":").map(Number);
+      const [eh, em] = s.endTime.split(":").map(Number);
+      busyIntervals.push({ start: sh * 60 + (sm || 0), end: eh * 60 + (em || 0) });
+    }
   });
   
   // Filter commitments to exclude deleted occurrences and check date range applicability
