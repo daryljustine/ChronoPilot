@@ -1049,6 +1049,33 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
             </div>
           </div>
         )}
+
+        {/* General Form Validation Warnings */}
+        {(!isFormValid || isFormInvalid) && (
+          <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg mt-4">
+            <div className="flex items-start gap-2">
+              <span className="text-red-500 text-lg">⚠️</span>
+              <div className="text-sm text-red-700 dark:text-red-200">
+                <div className="font-semibold mb-2">Cannot Add Task - Please Fix These Issues:</div>
+                <ul className="space-y-1 text-xs">
+                  {getValidationErrors().map((error, index) => (
+                    <li key={index} className="flex items-start gap-1">
+                      <span className="text-red-500 mt-0.5">•</span>
+                      <span>{error}</span>
+                    </li>
+                  ))}
+                  {isFormInvalid && (
+                    <li className="flex items-start gap-1">
+                      <span className="text-red-500 mt-0.5">•</span>
+                      <span>Selected frequency preference is not compatible with the deadline timeframe</span>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Buttons */}
         <div className="flex space-x-3 mt-4 justify-end">
             <button
