@@ -42,15 +42,7 @@ function App() {
 
     const [activeTab, setActiveTab] = useState<'dashboard' | 'tasks' | 'plan' | 'timer' | 'calendar' | 'commitments' | 'settings'>('dashboard');
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [studyPlans, setStudyPlans] = useState<StudyPlan[]>(() => {
-        const saved = localStorage.getItem('timepilot-studyPlans');
-        try {
-            const parsed = saved ? JSON.parse(saved) : [];
-            return Array.isArray(parsed) ? parsed : [];
-        } catch {
-            return [];
-        }
-    });
+    const [studyPlans, setStudyPlans] = useState<StudyPlan[]>([]);
     const [currentTask, setCurrentTask] = useState<Task | null>(null);
     const [currentSession, setCurrentSession] = useState<{ allocatedHours: number; planDate?: string; sessionNumber?: number } | null>(null);
     const [fixedCommitments, setFixedCommitments] = useState<FixedCommitment[]>(() => {
