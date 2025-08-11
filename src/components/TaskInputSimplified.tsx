@@ -210,7 +210,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
       estimatedHours: estimatedDecimalHours,
       targetFrequency: formData.targetFrequency,
       deadlineType: formData.deadlineType,
-      minWorkBlock: formData.minWorkBlock,
       startDate: formData.startDate,
     };
     return checkFrequencyDeadlineConflict(taskForCheck as any, userSettings);
