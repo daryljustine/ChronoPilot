@@ -36,6 +36,10 @@ import './utils/test-data-setup'; // Import test data setup for testing
 import { assessAddTaskFeasibility } from './utils/task-feasibility';
 
 function App() {
+    // Debug React import
+    console.log('React:', React);
+    console.log('useState:', useState);
+
     const [activeTab, setActiveTab] = useState<'dashboard' | 'tasks' | 'plan' | 'timer' | 'calendar' | 'commitments' | 'settings'>('dashboard');
     const [tasks, setTasks] = useState<Task[]>(() => {
         const saved = localStorage.getItem('timepilot-tasks');
