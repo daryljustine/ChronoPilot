@@ -219,7 +219,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
     if (!formData.deadline || formData.deadlineType === 'none') {
       return { hasConflict: false };
     }
-    
+
     const taskForCheck = {
       deadline: formData.deadline,
       estimatedHours: convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes),
@@ -228,9 +228,39 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
       minWorkBlock: formData.minWorkBlock,
       startDate: formData.startDate,
     };
-    
+
     return checkFrequencyDeadlineConflict(taskForCheck, userSettings);
   }, [formData.deadline, formData.estimatedHours, formData.estimatedMinutes, formData.targetFrequency, formData.deadlineType, formData.minWorkBlock, formData.startDate, userSettings]);
+
+  // Check time restrictions for frequency preferences
+  const frequencyRestrictions = useMemo(() => {
+    if (!formData.deadline || formData.deadlineType === 'none') {
+      return { disableWeekly: false, disable3xWeek: false };
+    }
+
+    const startDate = new Date(formData.startDate || new Date().toISOString().split('T')[0]);
+    const deadlineDate = new Date(formData.deadline);
+    const timeDiff = deadlineDate.getTime() - startDate.getTime();
+    const daysUntilDeadline = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    return {
+      disableWeekly: daysUntilDeadline < 14, // Less than 2 weeks
+      disable3xWeek: daysUntilDeadline < 7   // Less than 1 week
+    };
+  }, [formData.deadline, formData.deadlineType, formData.startDate]);
+
+  // Check if form is valid for submission
+  const isFormInvalid = useMemo(() => {
+    // Invalid if weekly is selected but should be disabled
+    if (formData.targetFrequency === 'weekly' && frequencyRestrictions.disableWeekly) {
+      return true;
+    }
+    // Invalid if 3x-week is selected but should be disabled
+    if (formData.targetFrequency === '3x-week' && frequencyRestrictions.disable3xWeek) {
+      return true;
+    }
+    return false;
+  }, [formData.targetFrequency, frequencyRestrictions]);
 
   // Enhanced validation with better error messages
   const isTitleValid = formData.title.trim().length > 0;
