@@ -41,15 +41,7 @@ function App() {
     console.log('useState:', useState);
 
     const [activeTab, setActiveTab] = useState<'dashboard' | 'tasks' | 'plan' | 'timer' | 'calendar' | 'commitments' | 'settings'>('dashboard');
-    const [tasks, setTasks] = useState<Task[]>(() => {
-        const saved = localStorage.getItem('timepilot-tasks');
-        try {
-            const parsed = saved ? JSON.parse(saved) : [];
-            return Array.isArray(parsed) ? parsed : [];
-        } catch {
-            return [];
-        }
-    });
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [studyPlans, setStudyPlans] = useState<StudyPlan[]>(() => {
         const saved = localStorage.getItem('timepilot-studyPlans');
         try {
