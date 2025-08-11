@@ -664,15 +664,62 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
                       </div>
                     )}
 
-                    {/* Validation errors display */}
-                    {!isEditFormValid && editFormData.title && (
-                      <div className="text-red-600 text-sm space-y-1">
-                        {!editFormData.title?.trim() && <div> Task title is required</div>}
-                        {((editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60)) <= 0 && <div> Estimated time must be greater than 0</div>}
-                        {!editFormData.impact && <div> Priority level is required</div>}
-                        {editFormData.deadline && editFormData.deadline < today && <div> Deadline cannot be in the past</div>}
-                        {editFormData.startDate && editFormData.startDate < today && <div> Start date cannot be in the past</div>}
-                        {editFormData.category === 'Custom...' && !editFormData.customCategory?.trim() && <div> Custom category is required</div>}
+                    {/* Enhanced validation errors display */}
+                    {!isEditFormValid && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-2 dark:bg-red-900/20 dark:border-red-700">
+                        <div className="text-red-800 dark:text-red-200 font-medium mb-2">Please fix these issues:</div>
+                        <ul className="text-red-700 dark:text-red-300 text-sm space-y-1">
+                          {getValidationErrors().map((error, index) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <span className="text-red-500 mt-0.5">•</span>
+                              <span>{error}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Frequency restriction warnings */}
+                    {(frequencyRestrictions.disableWeekly || frequencyRestrictions.disable3xWeek) && (
+                      <div className="mt-2 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <span className="text-orange-500 text-sm">⚠️</span>
+                          <div className="text-xs text-orange-700 dark:text-orange-200">
+                            <div className="font-medium mb-1">Frequency Options Limited</div>
+                            {frequencyRestrictions.disableWeekly && (
+                              <div className="mb-1">• Weekly sessions need at least 2 weeks between start date and deadline</div>
+                            )}
+                            {frequencyRestrictions.disable3xWeek && (
+                              <div className="mb-1">• 2-3 days frequency needs at least 1 week between start date and deadline</div>
+                            )}
+                            <div className="text-orange-600 dark:text-orange-300 font-medium">Consider extending your deadline or using daily progress instead.</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Deadline conflict warning */}
+                    {deadlineConflict.hasConflict && (
+                      <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded text-xs text-amber-700 dark:text-amber-200">
+                        <div className="font-medium">Frequency preference may not allow completion before deadline</div>
+                        {deadlineConflict.reason && (
+                          <div className="mt-1">{deadlineConflict.reason}</div>
+                        )}
+                        {deadlineConflict.recommendedFrequency && (
+                          <div className="mt-1">
+                            <strong>Recommended:</strong> Switch to "{deadlineConflict.recommendedFrequency}" frequency, or daily scheduling will be used instead.
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Low-priority urgent warning */}
+                    {isLowPriorityUrgent && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-2 dark:bg-yellow-900/20 dark:border-yellow-700">
+                        <div className="text-yellow-800 dark:text-yellow-200 font-medium mb-1">Warning: low priority with urgent deadline</div>
+                        <div className="text-yellow-700 dark:text-yellow-300 text-sm">
+                          This task is low priority but has an urgent deadline. It may not be scheduled if you have more important urgent tasks.
+                        </div>
                       </div>
                     )}
 
