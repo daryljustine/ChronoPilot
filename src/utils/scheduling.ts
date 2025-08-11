@@ -357,7 +357,7 @@ const optimizeSessionDistribution = (task: Task, totalHours: number, daysForTask
 // Remove calculatePriorityScore, calculateTaskPriorityScore, and TaskWithPriority
 
 // Helper to find the next available time slot for a session on a given day
-function findNextAvailableTimeSlot(
+export function findNextAvailableTimeSlot(
   requiredHours: number,
   existingSessions: StudySession[],
   commitments: FixedCommitment[],
