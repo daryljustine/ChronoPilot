@@ -331,8 +331,14 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
   const isCustomCategoryValid = !showCustomCategory || (formData.customCategory && formData.customCategory.trim().length > 0 && formData.customCategory.trim().length <= 50);
 
   const isOneSittingTooLong = formData.isOneTimeTask && totalTime > userSettings.dailyAvailableHours;
+  const isOneSittingNoTimeSlot = formData.isOneTimeTask && !oneSittingTimeSlotCheck.hasAvailableSlot;
+
+  // For one-sitting tasks, we ignore start date validation since they don't use start dates
+  const effectiveStartDateValid = formData.isOneTimeTask ? true : isStartDateNotPast;
+
   const isFormValid = isTitleValid && isTitleLengthValid && isDeadlineValid && isDeadlineNotPast &&
-                     isEstimatedValid && isEstimatedReasonable && isImpactValid && isCustomCategoryValid && isStartDateNotPast && !isFormInvalid;
+                     isEstimatedValid && isEstimatedReasonable && isImpactValid && isCustomCategoryValid &&
+                     effectiveStartDateValid && !isFormInvalid && !isOneSittingTooLong && !isOneSittingNoTimeSlot;
 
   // Enhanced validation messages
   const getValidationErrors = () => {
