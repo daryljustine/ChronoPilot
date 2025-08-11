@@ -45,29 +45,7 @@ function App() {
     const [studyPlans, setStudyPlans] = useState<StudyPlan[]>([]);
     const [currentTask, setCurrentTask] = useState<Task | null>(null);
     const [currentSession, setCurrentSession] = useState<{ allocatedHours: number; planDate?: string; sessionNumber?: number } | null>(null);
-    const [fixedCommitments, setFixedCommitments] = useState<FixedCommitment[]>(() => {
-        const saved = localStorage.getItem('timepilot-commitments');
-        try {
-            const parsed = saved ? JSON.parse(saved) : [];
-            if (Array.isArray(parsed)) {
-                // Migrate existing commitments to include recurring field
-                return parsed.map((commitment: any) => {
-                    if (commitment.recurring === undefined) {
-                        // Legacy commitment - assume it's recurring and migrate
-                        return {
-                            ...commitment,
-                            recurring: true,
-                            specificDates: commitment.specificDates || []
-                        };
-                    }
-                    return commitment;
-                });
-            }
-            return [];
-        } catch {
-            return [];
-        }
-    });
+    const [fixedCommitments, setFixedCommitments] = useState<FixedCommitment[]>([]);
     const [settings, setSettings] = useState<UserSettings>(() => {
         const saved = localStorage.getItem('timepilot-settings');
         try {
