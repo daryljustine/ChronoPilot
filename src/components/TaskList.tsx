@@ -48,18 +48,6 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     }
   }, [editFormData.deadline, editingTaskId]);
 
-  // Auto-adjust frequency when restrictions change (similar to TaskInput)
-  React.useEffect(() => {
-    if (editingTaskId) {
-      if (frequencyRestrictions.disableWeekly && editFormData.targetFrequency === 'weekly') {
-        setEditFormData(prev => ({ ...prev, targetFrequency: 'daily' }));
-      }
-      if (frequencyRestrictions.disable3xWeek && editFormData.targetFrequency === '3x-week') {
-        setEditFormData(prev => ({ ...prev, targetFrequency: 'daily' }));
-      }
-    }
-  }, [frequencyRestrictions.disableWeekly, frequencyRestrictions.disable3xWeek, editFormData.targetFrequency, editingTaskId]);
-  
   // Get today's date in YYYY-MM-DD format for min attribute
   const today = new Date().toISOString().split('T')[0];
 
@@ -92,6 +80,18 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
       disable3xWeek: daysUntilDeadline < 7   // Less than 1 week
     };
   }, [editFormData.deadline, editFormData.deadlineType, editFormData.startDate]);
+
+  // Auto-adjust frequency when restrictions change (similar to TaskInput)
+  React.useEffect(() => {
+    if (editingTaskId) {
+      if (frequencyRestrictions.disableWeekly && editFormData.targetFrequency === 'weekly') {
+        setEditFormData(prev => ({ ...prev, targetFrequency: 'daily' }));
+      }
+      if (frequencyRestrictions.disable3xWeek && editFormData.targetFrequency === '3x-week') {
+        setEditFormData(prev => ({ ...prev, targetFrequency: 'daily' }));
+      }
+    }
+  }, [frequencyRestrictions.disableWeekly, frequencyRestrictions.disable3xWeek, editFormData.targetFrequency, editingTaskId]);
 
   // Validation error messages
   const getValidationErrors = (): string[] => {
