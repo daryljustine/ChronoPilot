@@ -46,28 +46,24 @@ function App() {
     const [currentTask, setCurrentTask] = useState<Task | null>(null);
     const [currentSession, setCurrentSession] = useState<{ allocatedHours: number; planDate?: string; sessionNumber?: number } | null>(null);
     const [fixedCommitments, setFixedCommitments] = useState<FixedCommitment[]>([]);
-    const [settings, setSettings] = useState<UserSettings>(() => {
-        const saved = localStorage.getItem('timepilot-settings');
-        try {
-            const parsed = saved ? JSON.parse(saved) : null;
-            // Remove breakDuration and preferredSessionLength from default/parsed settings
-            const defaultSettings = {
-                dailyAvailableHours: 6,
-                workDays: [0, 1, 2, 3, 4, 5, 6],
-                bufferDays: 0,
-                minSessionLength: 15
-            };
-            return parsed && typeof parsed === 'object'
-                ? { ...defaultSettings, ...parsed, breakDuration: undefined, preferredSessionLength: undefined } // Ensure they are removed even if present in old localStorage
-                : defaultSettings;
-        } catch {
-            return {
-                dailyAvailableHours: 6,
-                workDays: [0, 1, 2, 3, 4, 5, 6],
-                bufferDays: 0,
-                minSessionLength: 15
-            };
-        }
+    const [settings, setSettings] = useState<UserSettings>({
+        dailyAvailableHours: 6,
+        workDays: [0, 1, 2, 3, 4, 5, 6],
+        bufferDays: 0,
+        minSessionLength: 15,
+        bufferTimeBetweenSessions: 0,
+        studyWindowStartHour: 6,
+        studyWindowEndHour: 23,
+        shortBreakDuration: 5,
+        longBreakDuration: 15,
+        maxConsecutiveHours: 4,
+        avoidTimeRanges: [],
+        weekendStudyHours: 4,
+        autoCompleteSessions: false,
+        enableNotifications: true,
+        userPrefersPressure: false,
+        studyPlanMode: 'even',
+        dateSpecificStudyWindows: []
     });
     const [, setIsPlanStale] = useState(false);
     const [, setLastPlanStaleReason] = useState<"settings" | "commitment" | "task" | null>(null);
