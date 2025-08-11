@@ -578,8 +578,18 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
       className="w-full px-4 py-3 border border-white/30 dark:border-white/20 rounded-xl text-sm bg-white/70 dark:bg-black/20 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
     >
       <option value="daily"> Daily progress - Work a bit each day</option>
-      <option value="3x-week"> Few times per week - Every 2-3 days</option>
-      <option value="weekly"> Weekly sessions - Once per week</option>
+      <option
+        value="3x-week"
+        disabled={frequencyRestrictions.disable3xWeek}
+      >
+         Few times per week - Every 2-3 days{frequencyRestrictions.disable3xWeek ? ' (Need 1+ week)' : ''}
+      </option>
+      <option
+        value="weekly"
+        disabled={frequencyRestrictions.disableWeekly}
+      >
+         Weekly sessions - Once per week{frequencyRestrictions.disableWeekly ? ' (Need 2+ weeks)' : ''}
+      </option>
       <option value="flexible"> When I have time - Flexible scheduling</option>
     </select>
 
