@@ -26,9 +26,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     deadlineType: 'hard' as 'hard' | 'soft' | 'none',
     schedulingPreference: 'consistent' as 'consistent' | 'opportunistic' | 'intensive',
     targetFrequency: 'daily' as 'daily' | 'weekly' | '3x-week' | 'flexible',
-    respectFrequencyForDeadlines: true,
-    preferredTimeSlots: [] as ('morning' | 'afternoon' | 'evening')[],
-    minWorkBlock: 30, // Only used for deadline tasks
     maxSessionLength: 2, // Default 2 hours for no-deadline tasks
     isOneTimeTask: false,
     startDate: new Date().toISOString().split('T')[0],
