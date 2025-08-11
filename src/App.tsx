@@ -137,10 +137,7 @@ function App() {
     } | null>(null);
 
     // Dark mode state
-    const [darkMode, setDarkMode] = useState(() => {
-        const saved = localStorage.getItem('timepilot-darkmode');
-        return saved ? JSON.parse(saved) : false;
-    });
+    const [darkMode, setDarkMode] = useState(false);
 
     // Persist gamification data
     useEffect(() => {
