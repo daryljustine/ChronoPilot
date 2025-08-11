@@ -477,22 +477,43 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
                     { value: '3x-week', label: ' Few times per week', desc: 'Every 2-3 days' },
                     { value: 'weekly', label: ' Weekly sessions', desc: 'Once per week' },
                     { value: 'flexible', label: ' When I have time', desc: 'Flexible scheduling' }
-                  ].map(option => (
-                    <label key={option.value} className={`flex flex-col p-3 border border-gray-200 dark:border-gray-600 rounded-xl hover:bg-white dark:hover:bg-gray-700 cursor-pointer transition-colors ${
-                      formData.targetFrequency === option.value ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-600' : ''
-                    }`}>
-                      <input
-                        type="radio"
-                        name="targetFrequency"
-                        value={option.value}
-                        checked={formData.targetFrequency === option.value}
-                        onChange={() => setFormData(f => ({ ...f, targetFrequency: option.value as any }))}
-                        className="sr-only"
-                      />
-                      <div className="text-sm font-medium text-gray-800 dark:text-white">{option.label}</div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">{option.desc}</div>
-                    </label>
-                  ))}
+                  ].map(option => {
+                    const isDisabled = (option.value === 'weekly' && frequencyRestrictions.disableWeekly) ||
+                                     (option.value === '3x-week' && frequencyRestrictions.disable3xWeek);
+
+                    return (
+                      <label key={option.value} className={`flex flex-col p-3 border rounded-xl transition-colors ${
+                        isDisabled
+                          ? 'border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 cursor-not-allowed opacity-50'
+                          : formData.targetFrequency === option.value
+                            ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-600 cursor-pointer hover:bg-white dark:hover:bg-gray-700'
+                            : 'border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-white dark:hover:bg-gray-700'
+                      }`}>
+                        <input
+                          type="radio"
+                          name="targetFrequency"
+                          value={option.value}
+                          checked={formData.targetFrequency === option.value}
+                          disabled={isDisabled}
+                          onChange={() => !isDisabled && setFormData(f => ({ ...f, targetFrequency: option.value as any }))}
+                          className="sr-only"
+                        />
+                        <div className={`text-sm font-medium ${isDisabled ? 'text-gray-500 dark:text-gray-500' : 'text-gray-800 dark:text-white'}`}>
+                          {option.label}
+                          {isDisabled && option.value === 'weekly' && ' (Need 2+ weeks)'}
+                          {isDisabled && option.value === '3x-week' && ' (Need 1+ week)'}
+                        </div>
+                        <div className={`text-xs ${isDisabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'}`}>
+                          {isDisabled
+                            ? option.value === 'weekly'
+                              ? 'Deadline too close for weekly preference'
+                              : 'Deadline too close for this frequency'
+                            : option.desc
+                          }
+                        </div>
+                      </label>
+                    );
+                  })}
                 </div>
                 {/* Show warning if frequency conflicts with deadline */}
                 {deadlineConflict.hasConflict && (
