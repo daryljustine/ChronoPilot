@@ -99,7 +99,7 @@ const TASK_TYPE_MAP: Record<string, keyof typeof EST_HELPER_CONFIG> = {
   Communicating: 'Administrative', // treat as Administrative for now
 };
 
-const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings }) => {
+const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings, existingStudyPlans = [], fixedCommitments = [] }) => {
   const [showEstimationHelper, setShowEstimationHelper] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
