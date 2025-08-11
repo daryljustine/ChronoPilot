@@ -1269,8 +1269,12 @@ export const generateNewStudyPlan = (
           const plan = studyPlans.find(p => p.date === currentDate);
 
           if (plan) {
-            // Calculate available time on this day
-            const usedHours = plan.plannedTasks.reduce((sum, session) => sum + session.allocatedHours, 0);
+            // Calculate available time on this day (excluding completed sessions)
+            const usedHours = plan.plannedTasks.reduce((sum, session) => {
+              // Don't count completed sessions toward used hours
+              if (session.done || session.status === 'completed') return sum;
+              return sum + session.allocatedHours;
+            }, 0);
             const availableHours = plan.availableHours - usedHours;
 
             // Check if we have enough time for minimum session
