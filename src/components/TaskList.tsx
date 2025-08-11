@@ -47,6 +47,18 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
       }
     }
   }, [editFormData.deadline, editingTaskId]);
+
+  // Auto-adjust frequency when restrictions change (similar to TaskInput)
+  React.useEffect(() => {
+    if (editingTaskId) {
+      if (frequencyRestrictions.disableWeekly && editFormData.targetFrequency === 'weekly') {
+        setEditFormData(prev => ({ ...prev, targetFrequency: 'daily' }));
+      }
+      if (frequencyRestrictions.disable3xWeek && editFormData.targetFrequency === '3x-week') {
+        setEditFormData(prev => ({ ...prev, targetFrequency: 'daily' }));
+      }
+    }
+  }, [frequencyRestrictions.disableWeekly, frequencyRestrictions.disable3xWeek, editFormData.targetFrequency, editingTaskId]);
   
   // Get today's date in YYYY-MM-DD format for min attribute
   const today = new Date().toISOString().split('T')[0];
@@ -63,6 +75,49 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     const daysUntilDeadline = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     return daysUntilDeadline <= 3 && editFormData.importance === false;
   }, [editFormData.deadline, editFormData.importance]);
+
+  // Check time restrictions for frequency preferences (similar to TaskInput)
+  const frequencyRestrictions = useMemo(() => {
+    if (!editFormData.deadline || editFormData.deadlineType === 'none') {
+      return { disableWeekly: false, disable3xWeek: false };
+    }
+
+    const startDate = new Date(editFormData.startDate || new Date().toISOString().split('T')[0]);
+    const deadlineDate = new Date(editFormData.deadline);
+    const timeDiff = deadlineDate.getTime() - startDate.getTime();
+    const daysUntilDeadline = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    return {
+      disableWeekly: daysUntilDeadline < 14, // Less than 2 weeks
+      disable3xWeek: daysUntilDeadline < 7   // Less than 1 week
+    };
+  }, [editFormData.deadline, editFormData.deadlineType, editFormData.startDate]);
+
+  // Validation error messages
+  const getValidationErrors = (): string[] => {
+    const errors: string[] = [];
+    if (!editFormData.title?.trim()) errors.push('Task title is required');
+    if (editFormData.title && editFormData.title.trim().length > 100) errors.push('Task title must be 100 characters or less');
+
+    const totalHours = (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+    if (totalHours <= 0) errors.push('Estimated time must be greater than 0');
+    if (totalHours > 100) errors.push('Estimated time seems unreasonably high (over 100 hours)');
+
+    if (!editFormData.impact) errors.push('Please select task importance');
+    if (editFormData.deadline && editFormData.deadline < today) errors.push('Deadline cannot be in the past');
+    if (editFormData.startDate && editFormData.startDate < today && !editFormData.isOneTimeTask) errors.push('Start date cannot be in the past');
+
+    if (editFormData.category === 'Custom...' && (!editFormData.customCategory?.trim() || editFormData.customCategory.trim().length > 50)) {
+      errors.push('Custom category must be between 1-50 characters');
+    }
+
+    if (editFormData.isOneTimeTask) {
+      if (!editFormData.deadline || editFormData.deadline.trim() === '') errors.push('One-sitting tasks require a deadline');
+      if (totalHours > userSettings.dailyAvailableHours) errors.push(`One-sitting task (${totalHours}h) exceeds your daily available hours (${userSettings.dailyAvailableHours}h)`);
+    }
+
+    return errors;
+  };
   
   // Check if deadline is in the past
   const isDeadlinePast = editFormData.deadline ? editFormData.deadline < today : false;
@@ -156,17 +211,30 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     setShowAdvancedOptions(false);
   };
 
-  // Form validation for edit form
+  // Enhanced form validation for edit form with TaskInput restrictions
   const isEditFormValid = React.useMemo(() => {
     if (!editFormData.title?.trim()) return false;
+    if (editFormData.title && editFormData.title.trim().length > 100) return false; // Title length limit
+
     const totalHours = (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
     if (totalHours <= 0) return false;
+    if (totalHours > 100) return false; // Reasonable hour limit
+
     if (!editFormData.impact) return false;
     if (editFormData.deadline && editFormData.deadline < today) return false;
     if (editFormData.startDate && editFormData.startDate < today) return false;
-    if (editFormData.category === 'Custom...' && !editFormData.customCategory?.trim()) return false;
+
+    // Custom category validation (1-50 characters)
+    if (editFormData.category === 'Custom...' && (!editFormData.customCategory?.trim() || editFormData.customCategory.trim().length > 50)) return false;
+
+    // One-sitting task validation
+    if (editFormData.isOneTimeTask) {
+      if (!editFormData.deadline || editFormData.deadline.trim() === '') return false; // One-sitting requires deadline
+      if (totalHours > userSettings.dailyAvailableHours) return false; // Can't exceed daily hours
+    }
+
     return true;
-  }, [editFormData, today]);
+  }, [editFormData, today, userSettings]);
 
   const saveEdit = () => {
     if (editingTaskId && isEditFormValid) {
@@ -180,6 +248,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
         deadline: editFormData.deadlineType === 'none' ? '' : (editFormData.deadline || ''),
         deadlineType: editFormData.deadline ? editFormData.deadlineType : 'none',
         importance: editFormData.impact === 'high',
+        priority: editFormData.impact === 'high', // Add priority field
         // Ensure all advanced fields are properly updated
         targetFrequency: editFormData.targetFrequency,
         respectFrequencyForDeadlines: editFormData.respectFrequencyForDeadlines,
