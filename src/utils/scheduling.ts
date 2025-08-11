@@ -1853,7 +1853,11 @@ export const generateNewStudyPlan = (
       for (const plan of studyPlans) {
         if (remainingHours <= 0) break;
 
-        const usedHours = plan.plannedTasks.reduce((sum, session) => sum + session.allocatedHours, 0);
+        const usedHours = plan.plannedTasks.reduce((sum, session) => {
+          // Don't count completed sessions toward used hours
+          if (session.done || session.status === 'completed') return sum;
+          return sum + session.allocatedHours;
+        }, 0);
         const availableHours = plan.availableHours - usedHours;
 
         if (availableHours >= minSessionHours) {
