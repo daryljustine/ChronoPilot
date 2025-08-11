@@ -6,6 +6,6 @@ import './pwa';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <TestComponent />
+    <App />
   </StrictMode>
 );
