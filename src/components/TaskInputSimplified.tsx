@@ -728,23 +728,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
 
                 {/* Working Advanced Options */}
                 <div className="space-y-4">
-                  {/* Frequency Override for Deadline Tasks */}
-                  <div>
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={formData.respectFrequencyForDeadlines}
-                        onChange={e => setFormData(f => ({ ...f, respectFrequencyForDeadlines: e.target.checked }))}
-                        className="text-violet-600"
-                      />
-                      <span className="text-sm text-gray-700 dark:text-gray-200">
-                        Respect work frequency even for urgent deadlines
-                      </span>
-                    </label>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 ml-6">
-                      When unchecked, urgent tasks will use daily scheduling regardless of frequency preference
-                    </div>
-                  </div>
 
                   {/* Minimum Work Block (only for deadline tasks) */}
                   {formData.deadlineType !== 'none' && (
