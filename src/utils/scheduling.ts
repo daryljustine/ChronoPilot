@@ -2437,12 +2437,12 @@ export const redistributeAfterTaskDeletion = (
     });
   });
 
-  // Account for existing sessions (excluding missed and redistributed sessions from daily limit)
+  // Account for existing sessions (excluding missed, redistributed, and completed sessions from daily limit)
   existingStudyPlans.forEach(plan => {
     if (availableDays.includes(plan.date)) {
       plan.plannedTasks.forEach(session => {
-        if (session.status !== 'skipped') {
-          // Only count regular sessions toward daily capacity
+        if (session.status !== 'skipped' && !session.done && session.status !== 'completed') {
+          // Only count non-completed sessions toward daily capacity
           if (!isMissedOrRedistributedSession(session, plan.date)) {
             dailyRemainingHours[plan.date] -= session.allocatedHours;
           }
