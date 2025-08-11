@@ -307,7 +307,6 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings
       estimatedHours: convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes),
       targetFrequency: formData.targetFrequency,
       deadlineType: formData.deadlineType,
-      minWorkBlock: formData.minWorkBlock,
       startDate: formData.startDate,
     };
 
