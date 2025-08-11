@@ -566,7 +566,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
             {formData.isOneTimeTask && (
                 <div className="mt-1 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border-l-2 border-blue-300 dark:border-blue-600">
                   <p className="text-xs text-blue-700 dark:text-blue-300">
-                     One-sitting tasks require a deadline and will be scheduled as single blocks.
+                     One-sitting tasks require a deadline and will be scheduled as single blocks on the deadline day, regardless of importance level.
                   </p>
                 </div>
               )}
