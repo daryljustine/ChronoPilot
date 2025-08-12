@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, Square, RotateCcw, CheckCircle, ArrowRight, Coffee, BookOpen } from 'lucide-react';
+import { Play, Pause, Square, RotateCcw, CheckCircle, ArrowRight, Coffee, BookOpen, ExternalLink } from 'lucide-react';
 import { Task, TimerState } from '../types';
 import { formatTimeForTimer } from '../utils/scheduling';
+import PopoutTimer from './PopoutTimer';
 
 // Helper to format time with seconds
 function formatTimeForTimerWithSeconds(seconds: number): string {
