@@ -897,7 +897,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
             {frequencyRestrictions.disable3xWeek && (
               <div className="mb-1">• 2-3 days frequency needs at least 1 week between start date and deadline</div>
             )}
-            <div className="text-orange-600 dark:text-orange-300 font-medium">Consider extending your deadline or using daily progress instead.</div>
           </div>
         </div>
       </div>
