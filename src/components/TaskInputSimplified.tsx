@@ -79,8 +79,8 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   // Reset conflicting options when one-sitting task is toggled
   useEffect(() => {
     if (formData.isOneTimeTask) {
-      // One-sitting tasks don't need frequency preferences and don't use start dates
-      setFormData(f => ({ ...f, targetFrequency: 'daily' }));
+      // One-sitting tasks don't need frequency preferences, don't use start dates, and must use total time estimation
+      setFormData(f => ({ ...f, targetFrequency: 'daily', estimationMode: 'total' }));
     }
   }, [formData.isOneTimeTask]);
 
