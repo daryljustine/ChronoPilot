@@ -29,6 +29,10 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     maxSessionLength: 2, // Default 2 hours for no-deadline tasks
     isOneTimeTask: false,
     startDate: new Date().toISOString().split('T')[0],
+    // Session-based estimation fields
+    estimationMode: 'total' as 'total' | 'session',
+    sessionDurationHours: '',
+    sessionDurationMinutes: '30',
   });
 
   const [showTimeEstimationModal, setShowTimeEstimationModal] = useState(false);
@@ -39,6 +43,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   
   // Quick time presets
   const [showTimePresets, setShowTimePresets] = useState(false);
+  const [showSessionPresets, setShowSessionPresets] = useState(false);
   const timePresets = [
     { label: '15m', hours: '0', minutes: '15' },
     { label: '30m', hours: '0', minutes: '30' },
@@ -47,6 +52,15 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     { label: '1h 30m', hours: '1', minutes: '30' },
     { label: '2h', hours: '2', minutes: '0' },
     { label: '3h', hours: '3', minutes: '0' },
+  ];
+
+  const sessionPresets = [
+    { label: '15m', hours: '0', minutes: '15' },
+    { label: '30m', hours: '0', minutes: '30' },
+    { label: '45m', hours: '0', minutes: '45' },
+    { label: '1h', hours: '1', minutes: '0' },
+    { label: '1h 30m', hours: '1', minutes: '30' },
+    { label: '2h', hours: '2', minutes: '0' },
   ];
 
   // Auto-detect deadline type based on whether deadline is set
@@ -73,6 +87,49 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   // Validation functions
   const convertToDecimalHours = (hours: string, minutes: string): number => {
     return parseInt(hours || '0') + parseInt(minutes || '0') / 60;
+  };
+
+  // Calculate total time from session-based estimation
+  const calculateSessionBasedTotal = useMemo(() => {
+    if (formData.estimationMode !== 'session' || !formData.deadline || formData.deadlineType === 'none') {
+      return 0;
+    }
+
+    const sessionDuration = convertToDecimalHours(formData.sessionDurationHours, formData.sessionDurationMinutes);
+    if (sessionDuration <= 0) return 0;
+
+    const startDate = new Date(formData.startDate || new Date().toISOString().split('T')[0]);
+    const deadlineDate = new Date(formData.deadline);
+    const timeDiff = deadlineDate.getTime() - startDate.getTime();
+    const totalDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1; // +1 to include start day
+
+    let workDays = 0;
+    switch (formData.targetFrequency) {
+      case 'daily':
+        workDays = totalDays;
+        break;
+      case '3x-week':
+        workDays = Math.floor((totalDays / 7) * 3) + Math.min(3, totalDays % 7);
+        break;
+      case 'weekly':
+        workDays = Math.ceil(totalDays / 7);
+        break;
+      case 'flexible':
+        workDays = Math.ceil(totalDays * 0.7); // Assume 70% of days for flexible
+        break;
+      default:
+        workDays = totalDays;
+    }
+
+    return sessionDuration * workDays;
+  }, [formData.estimationMode, formData.sessionDurationHours, formData.sessionDurationMinutes, formData.deadline, formData.deadlineType, formData.startDate, formData.targetFrequency]);
+
+  // Get effective total time (either direct input or calculated from sessions)
+  const getEffectiveTotalTime = () => {
+    if (formData.estimationMode === 'session') {
+      return calculateSessionBasedTotal;
+    }
+    return convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes);
   };
 
   // Check time restrictions for frequency preferences
@@ -181,14 +238,14 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   const isTitleLengthValid = formData.title.trim().length <= 100;
   const isDeadlineValid = !formData.deadline || new Date(formData.deadline) >= new Date(today);
   const isStartDateValid = !formData.startDate || new Date(formData.startDate) >= new Date(today);
-  const totalTime = convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes);
+  const totalTime = getEffectiveTotalTime();
   const isEstimatedValid = totalTime > 0;
   const isEstimatedReasonable = totalTime <= 100;
   const isImpactValid = formData.impact !== '';
   const isCustomCategoryValid = !showCustomCategory || (formData.customCategory && formData.customCategory.trim().length > 0 && formData.customCategory.trim().length <= 50);
 
   const isDeadlineRequiredForOneSitting = formData.isOneTimeTask && (!formData.deadline || formData.deadline.trim() === '');
-  const estimatedDecimalHours = convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes);
+  const estimatedDecimalHours = getEffectiveTotalTime();
   const isOneSittingTooLong = formData.isOneTimeTask && estimatedDecimalHours > userSettings.dailyAvailableHours;
   const isOneSittingNoTimeSlot = formData.isOneTimeTask && !oneSittingTimeSlotCheck.hasAvailableSlot;
 
@@ -207,7 +264,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     }
     const taskForCheck = {
       deadline: formData.deadline,
-      estimatedHours: estimatedDecimalHours,
+      estimatedHours: getEffectiveTotalTime(),
       targetFrequency: formData.targetFrequency,
       deadlineType: formData.deadlineType,
       startDate: formData.startDate,
@@ -254,7 +311,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   }
     
     const category = showCustomCategory ? formData.customCategory : formData.category;
-    const decimalHours = convertToDecimalHours(formData.estimatedHours, formData.estimatedMinutes);
+    const decimalHours = getEffectiveTotalTime();
     
     onAddTask({
       title: formData.title.trim(),
@@ -291,6 +348,9 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
       maxSessionLength: 2,
       isOneTimeTask: false,
       startDate: today,
+      estimationMode: 'total',
+      sessionDurationHours: '',
+      sessionDurationMinutes: '30',
     });
     // Hide the form after successful submission
     onCancel?.();
