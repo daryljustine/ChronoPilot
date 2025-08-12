@@ -389,6 +389,19 @@ const StudyTimer: React.FC<StudyTimerProps> = ({
           </div>
         </div>
       )}
+
+      {/* Pop-out Timer */}
+      <PopoutTimer
+        isOpen={showPopoutTimer}
+        onClose={() => setShowPopoutTimer(false)}
+        currentTask={currentTask}
+        timer={timer}
+        onTimerStart={onTimerStart}
+        onTimerPause={onTimerPause}
+        onTimerStop={onTimerStop}
+        onTimerReset={onTimerReset}
+        currentSession={currentSession}
+      />
     </div>
   );
 };
