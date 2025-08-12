@@ -5,7 +5,7 @@ interface TimePilotIconProps {
   className?: string;
 }
 
-const TimePilotIcon: React.FC<TimePilotIconProps> = ({ size = 24, className = '' }) => {
+const TimePilotIcon= ({ size = 24, className = '' }: TimePilotIconProps) => {
   return (
     <svg 
       width={size} 

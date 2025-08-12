@@ -8,7 +8,7 @@ interface FixedCommitmentInputProps {
   existingCommitments: FixedCommitment[];
 }
 
-const FixedCommitmentInput: React.FC<FixedCommitmentInputProps> = ({ onAddCommitment, existingCommitments }) => {
+const FixedCommitmentInput= ({ onAddCommitment, existingCommitments }: FixedCommitmentInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: '',

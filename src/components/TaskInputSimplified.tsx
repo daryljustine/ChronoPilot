@@ -12,7 +12,7 @@ interface TaskInputProps {
   fixedCommitments?: FixedCommitment[];
 }
 
-const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings, existingStudyPlans = [], fixedCommitments = [] }) => {
+const TaskInputSimplified= ({ onAddTask, onCancel, userSettings, existingStudyPlans = [], fixedCommitments = [] }: TaskInputProps) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',

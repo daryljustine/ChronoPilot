@@ -10,7 +10,7 @@ interface FixedCommitmentEditProps {
   onCancel: () => void;
 }
 
-const FixedCommitmentEdit: React.FC<FixedCommitmentEditProps> = ({ commitment, existingCommitments, onUpdateCommitment, onCancel }) => {
+const FixedCommitmentEdit= ({ commitment, existingCommitments, onUpdateCommitment, onCancel }: FixedCommitmentEditProps) => {
   const [formData, setFormData] = useState({
     title: commitment.title,
     startTime: commitment.startTime || '',

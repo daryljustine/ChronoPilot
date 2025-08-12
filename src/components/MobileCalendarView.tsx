@@ -552,7 +552,7 @@ const MobileCalendarView: React.FC<MobileCalendarViewProps> = ({
   };
 
   // Drop Zone Component for time slots
-  const TimeSlotDropZone: React.FC<{ hour: number; children: React.ReactNode }> = ({ hour, children }) => {
+  const TimeSlotDropZone= ({ hour, children }: { hour: number; children: React.ReactNode }) => {
     const [{ isOver, canDrop }, drop] = useDrop(() => ({
       accept: 'event',
       drop: (item: CalendarEvent) => {

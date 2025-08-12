@@ -30,7 +30,7 @@ type EditFormData = Partial<Task> & {
   sessionDurationMinutes?: string;
 };
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, autoRemovedTasks = [], onDismissAutoRemovedTask, userSettings }) => {
+const TaskList= ({ tasks, onUpdateTask, onDeleteTask, autoRemovedTasks = [], onDismissAutoRemovedTask, userSettings }: TaskListProps) => {
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editFormData, setEditFormData] = useState<EditFormData>({});
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
