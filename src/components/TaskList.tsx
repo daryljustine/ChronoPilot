@@ -199,14 +199,6 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     return sessionDuration * workDays;
   }, [editFormData.estimationMode, editFormData.sessionDurationHours, editFormData.sessionDurationMinutes, editFormData.deadline, editFormData.deadlineType, editFormData.startDate, editFormData.targetFrequency]);
 
-  // Get effective total time (either direct input or calculated from sessions)
-  const getEffectiveTotalTime = () => {
-    if (editFormData.estimationMode === 'session') {
-      return calculateSessionBasedTotal;
-    }
-    return (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
-  };
-
   const getUrgencyColor = (deadline: string): string => {
     const now = new Date();
     const deadlineDate = new Date(deadline);
