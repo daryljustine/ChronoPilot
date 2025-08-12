@@ -112,7 +112,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     if (!editFormData.title?.trim()) errors.push('Task title is required');
     if (editFormData.title && editFormData.title.trim().length > 100) errors.push('Task title must be 100 characters or less');
 
-    const totalHours = (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+    const totalHours = getEffectiveTotalTime();
     if (totalHours <= 0) errors.push('Estimated time must be greater than 0');
     if (totalHours > 100) errors.push('Estimated time seems unreasonably high (over 100 hours)');
 
