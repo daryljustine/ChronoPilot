@@ -106,6 +106,14 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     }
   }, [editFormData.isOneTimeTask]);
 
+  // Get effective total time (either direct input or calculated from sessions)
+  const getEffectiveTotalTime = () => {
+    if (editFormData.estimationMode === 'session') {
+      return calculateSessionBasedTotal;
+    }
+    return (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+  };
+
   // Validation error messages
   const getValidationErrors = (): string[] => {
     const errors: string[] = [];
