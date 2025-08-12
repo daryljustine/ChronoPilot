@@ -423,7 +423,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
                 ))}
               </select>
               {showCustomCategory && (
-                <div className="relative mt-2">
+                <div className="relative mt-1">
                   <input
                     type="text"
                     value={formData.customCategory}
@@ -446,64 +446,88 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Deadline <span className="text-gray-400"></span>
-              </label>
-              <input
-                type="date"
-                min={today}
-                value={formData.deadline}
-                onChange={e => setFormData(f => ({ ...f, deadline: e.target.value }))}
-                className="w-full px-3 py-2 border border-white/30 dark:border-white/20 rounded-xl text-sm focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/70 dark:bg-black/20 dark:text-white"
-                placeholder="Select deadline (optional)"
-              />
-              {!isDeadlineValid && formData.deadline && (
-                <div className="text-red-600 text-xs mt-1">
-                  Deadline cannot be in the past. Please select today or a future date.
+            {/* Deadline and Start Date - Side by Side */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                  Deadline
+                </label>
+                <input
+                  type="date"
+                  min={today}
+                  value={formData.deadline}
+                  onChange={e => setFormData(f => ({ ...f, deadline: e.target.value }))}
+                  className="w-full px-3 py-2 border border-white/30 dark:border-white/20 rounded-xl text-sm focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/70 dark:bg-black/20 dark:text-white"
+                  placeholder="Select deadline (optional)"
+                />
+                {!isDeadlineValid && formData.deadline && (
+                  <div className="text-red-600 text-xs mt-1">
+                    Deadline cannot be in the past.
+                  </div>
+                )}
+              </div>
+
+              {!formData.isOneTimeTask && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    min={today}
+                    value={formData.startDate}
+                    onChange={e => setFormData(f => ({ ...f, startDate: e.target.value || today }))}
+                    className="w-full px-3 py-2 border border-white/30 dark:border-white/20 rounded-xl text-sm bg-white/70 dark:bg-black/20 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  />
+                  {!isStartDateValid && formData.startDate && (
+                    <div className="text-red-600 text-xs mt-1">
+                      Start date cannot be in the past.
+                    </div>
+                  )}
                 </div>
               )}
-              {/* Quick deadline shortcuts */}
-              <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                <button
-                  type="button"
-                  className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-                  onClick={() => setFormData(f => ({ ...f, deadline: today }))}
-                >
-                  Today
-                </button>
-                <button
-                  type="button"
-                  className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-                  onClick={() => {
-                    const d = new Date();
-                    d.setDate(d.getDate() + 1);
-                    const iso = d.toISOString().split('T')[0];
-                    setFormData(f => ({ ...f, deadline: iso }));
-                  }}
-                >
-                  Tomorrow
-                </button>
-                <button
-                  type="button"
-                  className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-                  onClick={() => {
-                    const d = new Date();
-                    d.setDate(d.getDate() + 7);
-                    const iso = d.toISOString().split('T')[0];
-                    setFormData(f => ({ ...f, deadline: iso }));
-                  }}
-                >
-                  Next week
-                </button>
-                <button
-                  type="button"
-                  className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-                  onClick={() => setFormData(f => ({ ...f, deadline: '' }))}
-                >
-                  Clear
-                </button>
-              </div>
+            </div>
+
+            {/* Quick deadline shortcuts - more compact */}
+            <div className="flex flex-wrap gap-1 text-xs">
+              <button
+                type="button"
+                className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+                onClick={() => setFormData(f => ({ ...f, deadline: today }))}
+              >
+                Today
+              </button>
+              <button
+                type="button"
+                className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+                onClick={() => {
+                  const d = new Date();
+                  d.setDate(d.getDate() + 1);
+                  const iso = d.toISOString().split('T')[0];
+                  setFormData(f => ({ ...f, deadline: iso }));
+                }}
+              >
+                Tomorrow
+              </button>
+              <button
+                type="button"
+                className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+                onClick={() => {
+                  const d = new Date();
+                  d.setDate(d.getDate() + 7);
+                  const iso = d.toISOString().split('T')[0];
+                  setFormData(f => ({ ...f, deadline: iso }));
+                }}
+              >
+                Next week
+              </button>
+              <button
+                type="button"
+                className="px-2 py-1 rounded border bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+                onClick={() => setFormData(f => ({ ...f, deadline: '' }))}
+              >
+                Clear
+              </button>
             </div>
           </div>
 
