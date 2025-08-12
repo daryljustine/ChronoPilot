@@ -907,89 +907,38 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
             </button>
 
             {showTaskTimeline && (
-              <div className="mt-3 p-4 bg-white/30 dark:bg-black/20 rounded-xl border border-white/20 dark:border-white/10">
-                {/* Deadline Type - Only show if deadline is set */}
-                {formData.deadline && formData.deadline.trim() !== '' && (
-                  <div className="space-y-2 mb-4">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Deadline Type</label>
-                    <div className="space-y-2">
-                      {[
-                        { value: 'hard', label: 'Hard deadline (must finish by date)' },
-                        { value: 'soft', label: 'Flexible target date' }
-                      ].map(option => (
-                        <label key={option.value} className="flex items-center gap-2">
-                          <input
-                            type="radio"
-                            name="deadlineType"
-                            value={option.value}
-                            checked={formData.deadlineType === option.value}
-                            onChange={() => setFormData(f => ({ ...f, deadlineType: option.value as any }))}
-                            className="text-violet-600"
-                          />
-                          <span className="text-sm text-gray-700 dark:text-gray-200">{option.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Start Date */}
-                {!formData.isOneTimeTask && (
-                  <div className="space-y-1 mb-4">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Start Date</label>
-                    <input
-                      type="date"
-                      min={today}
-                      value={formData.startDate}
-                      onChange={e => setFormData(f => ({ ...f, startDate: e.target.value || today }))}
-                      className="w-full px-3 py-2 border border-white/30 dark:border-white/20 rounded-xl text-sm bg-white/70 dark:bg-black/20 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    />
-                    {!isStartDateValid && formData.startDate && (
-                      <div className="text-red-600 text-xs mt-1">
-                        Start date cannot be in the past. Please select today or a future date.
-                      </div>
-                    )}
-                    <div className="text-xs text-gray-500 dark:text-gray-400">Default is today. Sessions won't be scheduled before this date.</div>
-                  </div>
-                )}
-
+              <div className="mt-2 p-3 bg-white/30 dark:bg-black/20 rounded-lg border border-white/20 dark:border-white/10">
                 {formData.isOneTimeTask && (
-                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
+                  <div className="mb-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
                     <div className="text-sm text-blue-800 dark:text-blue-200">
-                      📅 <strong>One-sitting tasks are always scheduled on the deadline day</strong> regardless of importance level. Start date is not applicable.
+                      📅 <strong>One-sitting tasks are always scheduled on the deadline day</strong> regardless of importance level.
                     </div>
                   </div>
                 )}
 
-                {/* Working Advanced Options */}
-                <div className="space-y-4">
-
-
-                  {/* Maximum Session Length (only for no-deadline tasks) */}
-                  {formData.deadlineType === 'none' && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                        Maximum session length
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="number"
-                          value={formData.maxSessionLength}
-                          onChange={e => setFormData(f => ({ ...f, maxSessionLength: Math.max(0.5, Math.min(8, parseFloat(e.target.value) || 2)) }))}
-                          min="0.5"
-                          max="8"
-                          step="0.5"
-                          className="w-20 px-3 py-2 border border-white/30 dark:border-white/20 rounded-xl text-sm bg-white/70 dark:bg-black/20 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                        />
-                        <span className="text-sm text-gray-700 dark:text-gray-200">hours</span>
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Maximum length for each study session (0.5-8 hours)
-                      </div>
+                {/* Maximum Session Length (only for no-deadline tasks) */}
+                {formData.deadlineType === 'none' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                      Maximum session length
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        value={formData.maxSessionLength}
+                        onChange={e => setFormData(f => ({ ...f, maxSessionLength: Math.max(0.5, Math.min(8, parseFloat(e.target.value) || 2)) }))}
+                        min="0.5"
+                        max="8"
+                        step="0.5"
+                        className="w-20 px-3 py-2 border border-white/30 dark:border-white/20 rounded-xl text-sm bg-white/70 dark:bg-black/20 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-200">hours</span>
                     </div>
-                  )}
-
-                </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Maximum length for each study session (0.5-8 hours)
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
