@@ -142,8 +142,8 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     if (!editFormData.deadline || editFormData.deadlineType === 'none') {
       return { hasConflict: false };
     }
-    
-    const totalHours = (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+
+    const totalHours = getEffectiveTotalTime();
     const taskForCheck = {
       deadline: editFormData.deadline,
       estimatedHours: totalHours,
