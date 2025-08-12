@@ -1092,6 +1092,47 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
           </div>
         </div>
       )}
+
+      {/* Time Estimation Help Modal */}
+      {showTimeEstimationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md max-h-96 overflow-y-auto m-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Time Estimation Guide</h3>
+              <button
+                onClick={() => setShowTimeEstimationModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+              <div>
+                <h4 className="font-medium text-gray-800 dark:text-white mb-2">🕒 Total Time</h4>
+                <p>Estimate the complete time needed to finish the entire task. The app will automatically divide this into manageable study sessions based on your frequency preference.</p>
+                <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                  Example: "Write essay" = 6 hours total
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-medium text-gray-800 dark:text-white mb-2">📅 Session-Based</h4>
+                <p>Specify how long each individual study session should be. The app calculates total time by multiplying session duration × frequency × available days until deadline.</p>
+                <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                  Example: 1 hour sessions × daily × 7 days = 7 hours total
+                </div>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg">
+                <p className="text-blue-800 dark:text-blue-200 text-xs">
+                  <strong>💡 Tip:</strong> Use "Total Time" when you know exactly how much work is needed. Use "Session-Based" when you prefer consistent daily sessions and want to see the cumulative effect.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
