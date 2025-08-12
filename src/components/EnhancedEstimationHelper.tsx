@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Clock, Brain, TrendingUp, AlertCircle, CheckCircle2, Info, Target, Zap, Calendar } from 'lucide-react';
 import { enhancedEstimationTracker, TaskEstimationContext, EstimationSuggestion } from '../utils/enhanced-estimation-tracker';
 

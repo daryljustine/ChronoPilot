@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { X, Clock, Zap } from 'lucide-react';
 import EnhancedEstimationHelper from './EnhancedEstimationHelper';
 

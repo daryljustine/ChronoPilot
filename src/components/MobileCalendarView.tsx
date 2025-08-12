@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Clock, BookOpen, X, Play, Trash2 } from 'lucide-react';
 import { StudyPlan, FixedCommitment, Task, StudySession, UserSettings } from '../types';
 import { checkSessionStatus, formatTime, validateTimeSlot, doesCommitmentApplyToDate } from '../utils/scheduling';
@@ -552,7 +552,7 @@ const MobileCalendarView: React.FC<MobileCalendarViewProps> = ({
   };
 
   // Drop Zone Component for time slots
-  const TimeSlotDropZone: React.FC<{ hour: number; children: React.ReactNode }> = ({ hour, children }) => {
+  const TimeSlotDropZone= ({ hour, children }: { hour: number; children: ReactNode }) => {
     const [{ isOver, canDrop }, drop] = useDrop(() => ({
       accept: 'event',
       drop: (item: CalendarEvent) => {

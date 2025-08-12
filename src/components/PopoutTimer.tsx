@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Square, X, Minimize2, Maximize2, Move } from 'lucide-react';
 import { Task, TimerState } from '../types';
 

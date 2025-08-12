@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ArrowRight, ArrowLeft, CheckCircle, Info, Clock, Calendar, Settings, BookOpen, Users, AlertTriangle, Target, Lightbulb, TrendingUp, Zap, Maximize2, Minimize2 } from 'lucide-react';
 
 interface TutorialStep {
@@ -10,7 +10,7 @@ interface TutorialStep {
   position: 'top' | 'bottom' | 'left' | 'right' | 'center';
   action?: 'observe' | 'wait-for-action';
   waitFor?: 'task-added' | 'session-clicked' | 'tab-changed' | 'settings-changed' | 'study-plan-mode-changed' | 'timer-session-active' | 'commitment-added';
-  customContent?: React.ReactNode;
+  customContent?: ReactNode;
   highlightTab?: boolean;
   requiresAction?: boolean;
 }

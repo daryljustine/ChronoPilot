@@ -6,7 +6,7 @@ interface EstimationInsightsProps {
   className?: string;
 }
 
-const EstimationInsights: React.FC<EstimationInsightsProps> = ({ className = '' }) => {
+const EstimationInsights= ({ className = '' }: EstimationInsightsProps) => {
   const insights = enhancedEstimationTracker.getEstimationInsights();
 
   const getAccuracyColor = (accuracy: number) => {

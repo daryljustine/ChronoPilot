@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Clock, BookOpen, TrendingUp, Calendar, Bell, CheckCircle2, AlertTriangle, Clock3, X } from 'lucide-react';
 import { Task, StudyPlan } from '../types';
 import { formatTime, getLocalDateString, checkSessionStatus } from '../utils/scheduling';
@@ -18,7 +18,7 @@ interface DashboardProps {
   hasCompletedTutorial?: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ tasks, studyPlans, dailyAvailableHours, workDays, onSelectTask, onGenerateStudyPlan }) => {
+const Dashboard = ({ tasks, studyPlans, dailyAvailableHours, workDays, onSelectTask, onGenerateStudyPlan }: DashboardProps) => {
   const [showRegeneratePrompt, setShowRegeneratePrompt] = useState(true);
   const [analyticsFilter, setAnalyticsFilter] = useState<'all' | 'week' | 'month' | 'custom'>('all');
   const [customStart, setCustomStart] = useState('');

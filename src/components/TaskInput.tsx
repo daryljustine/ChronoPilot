@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Plus, Info, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { Task, UserSettings, StudyPlan, FixedCommitment } from '../types';
 import { checkFrequencyDeadlineConflict, findNextAvailableTimeSlot, doesCommitmentApplyToDate, getEffectiveStudyWindow } from '../utils/scheduling';
@@ -99,7 +99,7 @@ const TASK_TYPE_MAP: Record<string, keyof typeof EST_HELPER_CONFIG> = {
   Communicating: 'Administrative', // treat as Administrative for now
 };
 
-const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel, userSettings, existingStudyPlans = [], fixedCommitments = [] }) => {
+const TaskInput= ({ onAddTask, onCancel, userSettings, existingStudyPlans = [], fixedCommitments = [] }: TaskInputProps) => {
   const [showEstimationHelper, setShowEstimationHelper] = useState(false);
   const [formData, setFormData] = useState({
     title: '',

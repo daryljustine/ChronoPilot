@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Search, Filter, Edit, Trash2, X } from 'lucide-react';
 import { FixedCommitment } from '../types';
 
