@@ -18,7 +18,7 @@ interface DashboardProps {
   hasCompletedTutorial?: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ tasks, studyPlans, dailyAvailableHours, workDays, onSelectTask, onGenerateStudyPlan }) => {
+const Dashboard = ({ tasks, studyPlans, dailyAvailableHours, workDays, onSelectTask, onGenerateStudyPlan }: DashboardProps) => {
   const [showRegeneratePrompt, setShowRegeneratePrompt] = useState(true);
   const [analyticsFilter, setAnalyticsFilter] = useState<'all' | 'week' | 'month' | 'custom'>('all');
   const [customStart, setCustomStart] = useState('');
@@ -222,7 +222,7 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, studyPlans, dailyAvailable
             { quote: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier", emoji: "🔥" },
             { quote: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson", emoji: "⏰" },
             { quote: "The difference between ordinary and extraordinary is that little extra.", author: "Jimmy Johnson", emoji: "⭐" },
-            { quote: "Momentum is a beautiful thing.", author: "Unknown", emoji: "🌪��" },
+            { quote: "Momentum is a beautiful thing.", author: "Unknown", emoji: "🌪️" },
             { quote: "Excellence is not a skill, it's an attitude.", author: "Ralph Marston", emoji: "💎" }
           ];
           const selected = buildingQuotes[Math.floor(Math.random() * buildingQuotes.length)];
