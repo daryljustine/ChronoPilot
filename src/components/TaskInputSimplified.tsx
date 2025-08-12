@@ -890,7 +890,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
         <div className="flex items-start gap-2">
           <span className="text-orange-500 text-sm">⚠��</span>
           <div className="text-xs text-orange-700 dark:text-orange-200">
-            <div className="font-medium mb-1">Frequency Options Limited</div>
             {frequencyRestrictions.disableWeekly && (
               <div className="mb-1">• Weekly sessions need at least 2 weeks between start date and deadline</div>
             )}
