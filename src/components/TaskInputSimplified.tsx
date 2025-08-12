@@ -406,11 +406,11 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
             </div>
           </div>
 
-          {/* Category & Deadline - Two Column Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Category, Deadline & Start Date - Optimized Layout */}
+          <div className="space-y-3">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Category <span className="text-gray-400"></span>
+                Category
               </label>
               <select
                 value={formData.category}
@@ -864,7 +864,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
     {(frequencyRestrictions.disableWeekly || frequencyRestrictions.disable3xWeek) && (
       <div className="mt-2 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg">
         <div className="flex items-start gap-2">
-          <span className="text-orange-500 text-sm">⚠️</span>
+          <span className="text-orange-500 text-sm">⚠��</span>
           <div className="text-xs text-orange-700 dark:text-orange-200">
             <div className="font-medium mb-1">Frequency Options Limited</div>
             {frequencyRestrictions.disableWeekly && (
