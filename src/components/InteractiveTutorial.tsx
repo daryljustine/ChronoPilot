@@ -10,7 +10,7 @@ interface TutorialStep {
   position: 'top' | 'bottom' | 'left' | 'right' | 'center';
   action?: 'observe' | 'wait-for-action';
   waitFor?: 'task-added' | 'session-clicked' | 'tab-changed' | 'settings-changed' | 'study-plan-mode-changed' | 'timer-session-active' | 'commitment-added';
-  customContent?: React.ReactNode;
+  customContent?: ReactNode;
   highlightTab?: boolean;
   requiresAction?: boolean;
 }
