@@ -24,6 +24,10 @@ type EditFormData = Partial<Task> & {
   minWorkBlock?: number;
   maxSessionLength?: number;
   isOneTimeTask?: boolean;
+  // Session-based estimation fields
+  estimationMode?: 'total' | 'session';
+  sessionDurationHours?: string;
+  sessionDurationMinutes?: string;
 };
 
 const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, autoRemovedTasks = [], onDismissAutoRemovedTask, userSettings }) => {
