@@ -552,21 +552,6 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
                             </button>
                           </div>
 
-                          {/* Start Date Selection */}
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Start date</label>
-                            <input
-                              type="date"
-                              min={today}
-                              value={editFormData.startDate || ''}
-                              onChange={(e) => setEditFormData({ ...editFormData, startDate: e.target.value || today })}
-                              className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-white dark:bg-gray-800 dark:text-white ${!isStartDateNotPast && editFormData.startDate ? 'border-red-500 focus:ring-red-500' : ''}`}
-                            />
-                            {!isStartDateNotPast && editFormData.startDate && (
-                              <div className="text-red-600 text-xs mt-1">Start date cannot be in the past. Please select today or a future date.</div>
-                            )}
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Default is today. Sessions will not be scheduled before this date.</div>
-                          </div>
 
 
                           {/* Additional options for deadline tasks */}
