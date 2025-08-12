@@ -297,7 +297,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
 
   const saveEdit = () => {
     if (editingTaskId && isEditFormValid) {
-      const totalHours = (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+      const totalHours = getEffectiveTotalTime();
       const category = editFormData.category === 'Custom...' ? editFormData.customCategory : editFormData.category;
 
       onUpdateTask(editingTaskId, {
