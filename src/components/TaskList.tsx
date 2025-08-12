@@ -395,18 +395,41 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
                       </div>
                     </div>
 
-                    {/* Deadline & One-time task */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Deadline <span className="text-gray-400">(Optional)</span></label>
-                      <input
-                        type="date"
-                        min={today}
-                        value={editFormData.deadline || ''}
-                        onChange={(e) => setEditFormData({ ...editFormData, deadline: e.target.value })}
-                        className="w-full px-3 py-2 border rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-white dark:bg-gray-800 dark:text-white"
-                        placeholder="Select deadline (optional)"
-                      />
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave empty for flexible tasks, or set a deadline for time-sensitive work</div>
+                    {/* Deadline & Start Date - Side by Side */}
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Deadline <span className="text-gray-400">(Optional)</span></label>
+                          <input
+                            type="date"
+                            min={today}
+                            value={editFormData.deadline || ''}
+                            onChange={(e) => setEditFormData({ ...editFormData, deadline: e.target.value })}
+                            className="w-full px-3 py-2 border rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-white dark:bg-gray-800 dark:text-white"
+                            placeholder="Select deadline (optional)"
+                          />
+                          {isDeadlinePast && editFormData.deadline && (
+                            <div className="text-red-600 text-xs mt-1">Deadline cannot be in the past.</div>
+                          )}
+                        </div>
+
+                        {!editFormData.isOneTimeTask && (
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Start Date</label>
+                            <input
+                              type="date"
+                              min={today}
+                              value={editFormData.startDate || ''}
+                              onChange={(e) => setEditFormData({ ...editFormData, startDate: e.target.value || today })}
+                              className={`w-full px-3 py-2 border rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-white dark:bg-gray-800 dark:text-white ${!isStartDateNotPast && editFormData.startDate ? 'border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {!isStartDateNotPast && editFormData.startDate && (
+                              <div className="text-red-600 text-xs mt-1">Start date cannot be in the past.</div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Leave deadline empty for flexible tasks, or set a deadline for time-sensitive work</div>
 
                       {/* One-time task option */}
                       <div className="mt-3">
