@@ -788,7 +788,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
               )}
           </div>
 
-          {/* Task Impact */}
+          {/* Task Impact - More Compact */}
           <div>
             <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
               Task Importance <span className="text-red-500">*</span>
@@ -801,8 +801,8 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
                 <HelpCircle size={14} />
               </button>
             </label>
-            <div className="grid grid-cols-2 gap-3">
-              <label className="flex items-center gap-3 p-3 border border-white/30 dark:border-white/20 rounded-xl hover:bg-white/50 dark:hover:bg-black/30 cursor-pointer transition-colors">
+            <div className="grid grid-cols-2 gap-2">
+              <label className="flex items-center gap-2 p-2 border border-white/30 dark:border-white/20 rounded-lg hover:bg-white/50 dark:hover:bg-black/30 cursor-pointer transition-colors">
                 <input
                   type="radio"
                   name="impact"
@@ -812,11 +812,11 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
                   className="text-violet-600"
                 />
                 <div>
-                  <div className="text-sm font-medium text-gray-800 dark:text-white"> Important</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">High priority, scheduled first</div>
+                  <div className="text-sm font-medium text-gray-800 dark:text-white">Important</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">High priority</div>
                 </div>
               </label>
-              <label className="flex items-center gap-3 p-3 border border-white/30 dark:border-white/20 rounded-xl hover:bg-white/50 dark:hover:bg-black/30 cursor-pointer transition-colors">
+              <label className="flex items-center gap-2 p-2 border border-white/30 dark:border-white/20 rounded-lg hover:bg-white/50 dark:hover:bg-black/30 cursor-pointer transition-colors">
                 <input
                   type="radio"
                   name="impact"
@@ -826,7 +826,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
                   className="text-violet-600"
                 />
                 <div>
-                  <div className="text-sm font-medium text-gray-800 dark:text-white"> Standard</div>
+                  <div className="text-sm font-medium text-gray-800 dark:text-white">Standard</div>
                   <div className="text-xs text-gray-600 dark:text-gray-400">Normal priority</div>
                 </div>
               </label>
