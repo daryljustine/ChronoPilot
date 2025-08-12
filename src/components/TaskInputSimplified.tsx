@@ -884,7 +884,6 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
       <option value="flexible"> When I have time - Flexible scheduling</option>
     </select>
 
-    {/* Frequency Restriction Warnings */}
     {(frequencyRestrictions.disableWeekly || frequencyRestrictions.disable3xWeek) && (
       <div className="mt-2 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg">
         <div className="flex items-start gap-2">
@@ -1013,7 +1012,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
                     ))}
                     {isFormInvalid && (
                       <li className="flex items-start gap-1">
-                        <span className="text-red-500 mt-0.5">•</span>
+                        <span className="text-red-500 mt-0.5">���</span>
                         <span>Selected frequency preference is not compatible with the deadline timeframe</span>
                       </li>
                     )}
