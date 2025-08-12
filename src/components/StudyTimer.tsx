@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, Square, RotateCcw, CheckCircle, ArrowRight, Coffee, BookOpen } from 'lucide-react';
+import { Play, Pause, Square, RotateCcw, CheckCircle, ArrowRight, Coffee, BookOpen, ExternalLink } from 'lucide-react';
 import { Task, TimerState } from '../types';
 import { formatTimeForTimer } from '../utils/scheduling';
+import PopoutTimer from './PopoutTimer';
 
 // Helper to format time with seconds
 function formatTimeForTimerWithSeconds(seconds: number): string {
@@ -69,6 +70,7 @@ const StudyTimer: React.FC<StudyTimerProps> = ({
   } | null>(null);
   const [isEditingTime, setIsEditingTime] = useState(false);
   const [customTimeInput, setCustomTimeInput] = useState('');
+  const [showPopoutTimer, setShowPopoutTimer] = useState(false);
 
   const handleStart = () => {
     onTimerStart();
@@ -313,6 +315,18 @@ const StudyTimer: React.FC<StudyTimerProps> = ({
 
           </div>
 
+          {/* Pop-out Timer Button */}
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={() => setShowPopoutTimer(true)}
+              className="flex items-center space-x-2 bg-gradient-to-r from-violet-500 to-purple-600 text-white py-2 px-4 rounded-lg hover:from-violet-600 hover:to-purple-700 transition-all duration-200 text-sm font-semibold"
+              title="Open timer in a draggable window"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Pop-out Timer</span>
+            </button>
+          </div>
+
           {/* Session Actions */}
           {timer.currentTime === 0 && (
             <div className="space-y-3">
@@ -375,6 +389,19 @@ const StudyTimer: React.FC<StudyTimerProps> = ({
           </div>
         </div>
       )}
+
+      {/* Pop-out Timer */}
+      <PopoutTimer
+        isOpen={showPopoutTimer}
+        onClose={() => setShowPopoutTimer(false)}
+        currentTask={currentTask}
+        timer={timer}
+        onTimerStart={onTimerStart}
+        onTimerPause={onTimerPause}
+        onTimerStop={onTimerStop}
+        onTimerReset={onTimerReset}
+        currentSession={currentSession}
+      />
     </div>
   );
 };
