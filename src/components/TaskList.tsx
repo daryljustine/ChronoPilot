@@ -545,50 +545,6 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
                             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Default is today. Sessions will not be scheduled before this date.</div>
                           </div>
 
-                          {/* Deadline Type Selection */}
-                          <div className="space-y-2 mb-4">
-                            <label className="flex items-center gap-3 p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="deadlineType"
-                                value="hard"
-                                checked={editFormData.deadlineType === 'hard'}
-                                onChange={() => setEditFormData({ ...editFormData, deadlineType: 'hard' })}
-                                className="text-blue-600"
-                              />
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 dark:text-white">Hard deadline (must finish by date)</div>
-                              </div>
-                            </label>
-
-                            <label className="flex items-center gap-3 p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="deadlineType"
-                                value="soft"
-                                checked={editFormData.deadlineType === 'soft'}
-                                onChange={() => setEditFormData({ ...editFormData, deadlineType: 'soft' })}
-                                className="text-blue-600"
-                              />
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 dark:text-white">Flexible target date</div>
-                              </div>
-                            </label>
-
-                            <label className="flex items-center gap-3 p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="deadlineType"
-                                value="none"
-                                checked={editFormData.deadlineType === 'none'}
-                                onChange={() => setEditFormData({ ...editFormData, deadlineType: 'none' })}
-                                className="text-blue-600"
-                              />
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 dark:text-white">No deadline (work when time allows)</div>
-                              </div>
-                            </label>
-                          </div>
 
                           {/* Additional options for deadline tasks */}
                           <div className="space-y-3 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
