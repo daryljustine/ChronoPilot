@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Clock, BookOpen, TrendingUp, AlertTriangle, CheckCircle, Lightbulb, X, CheckCircle2, Clock3 } from 'lucide-react';
 import { StudyPlan, Task, StudySession, FixedCommitment, UserSettings } from '../types'; // Added FixedCommitment to imports
 import { formatTime, generateSmartSuggestions, getLocalDateString, checkSessionStatus, moveIndividualSession, isTaskDeadlinePast } from '../utils/scheduling';

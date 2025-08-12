@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Plus, Info, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { Task, UserSettings, StudyPlan, FixedCommitment } from '../types';
 import { checkFrequencyDeadlineConflict, findNextAvailableTimeSlot, doesCommitmentApplyToDate, getEffectiveStudyWindow } from '../utils/scheduling';

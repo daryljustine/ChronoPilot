@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Plus, Clock, MapPin, User, AlertTriangle, Calendar } from 'lucide-react';
 import { FixedCommitment } from '../types';
 import { checkCommitmentConflicts } from '../utils/scheduling';

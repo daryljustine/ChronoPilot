@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Clock, BookOpen, X, Play, Trash2 } from 'lucide-react';
 import { StudyPlan, FixedCommitment, Task, StudySession, UserSettings } from '../types';
 import { checkSessionStatus, formatTime, validateTimeSlot, doesCommitmentApplyToDate } from '../utils/scheduling';

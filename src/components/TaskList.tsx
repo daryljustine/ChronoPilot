@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { BookOpen, Edit, Trash2, CheckCircle2, X, Info, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { Task, UserSettings } from '../types';
 import { formatTime, checkFrequencyDeadlineConflict } from '../utils/scheduling';

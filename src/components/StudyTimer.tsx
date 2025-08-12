@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Play, Pause, Square, RotateCcw, CheckCircle, ArrowRight, Coffee, BookOpen, ExternalLink } from 'lucide-react';
 import { Task, TimerState } from '../types';
 import { formatTimeForTimer } from '../utils/scheduling';
