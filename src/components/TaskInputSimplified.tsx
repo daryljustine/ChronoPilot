@@ -908,7 +908,8 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
   </div>
 )}
 
-          {/* Advanced Timeline Options */}
+          {/* Advanced Timeline Options - Only show for tasks without deadline */}
+          {!formData.deadline && (
           <div>
             <button
               type="button"
@@ -955,6 +956,7 @@ const TaskInputSimplified: React.FC<TaskInputProps> = ({ onAddTask, onCancel, us
               </div>
             )}
           </div>
+          )}
 
           {/* Validation Feedback */}
           {!isFormValid && showValidationErrors && (
