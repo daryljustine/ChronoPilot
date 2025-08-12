@@ -70,6 +70,7 @@ const StudyTimer: React.FC<StudyTimerProps> = ({
   } | null>(null);
   const [isEditingTime, setIsEditingTime] = useState(false);
   const [customTimeInput, setCustomTimeInput] = useState('');
+  const [showPopoutTimer, setShowPopoutTimer] = useState(false);
 
   const handleStart = () => {
     onTimerStart();
