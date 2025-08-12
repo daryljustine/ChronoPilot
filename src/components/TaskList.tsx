@@ -690,7 +690,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
                     )}
 
                     {/* Frequency restriction warnings */}
-                    {(frequencyRestrictions.disableWeekly || frequencyRestrictions.disable3xWeek) && (
+                    {false && (
                       <div className="mt-2 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg">
                         <div className="flex items-start gap-2">
                           <span className="text-orange-500 text-sm">⚠️</span>
