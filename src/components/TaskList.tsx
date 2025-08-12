@@ -272,7 +272,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     if (!editFormData.title?.trim()) return false;
     if (editFormData.title && editFormData.title.trim().length > 100) return false; // Title length limit
 
-    const totalHours = (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+    const totalHours = getEffectiveTotalTime();
     if (totalHours <= 0) return false;
     if (totalHours > 100) return false; // Reasonable hour limit
 
