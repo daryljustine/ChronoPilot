@@ -98,6 +98,14 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     }
   }, [frequencyRestrictions.disableWeekly, frequencyRestrictions.disable3xWeek, editFormData.targetFrequency, editingTaskId]);
 
+  // Reset conflicting options when one-sitting task is toggled
+  React.useEffect(() => {
+    if (editFormData.isOneTimeTask) {
+      // One-sitting tasks must use total time estimation
+      setEditFormData(f => ({ ...f, estimationMode: 'total' }));
+    }
+  }, [editFormData.isOneTimeTask]);
+
   // Validation error messages
   const getValidationErrors = (): string[] => {
     const errors: string[] = [];
