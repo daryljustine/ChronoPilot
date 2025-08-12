@@ -315,6 +315,18 @@ const StudyTimer: React.FC<StudyTimerProps> = ({
 
           </div>
 
+          {/* Pop-out Timer Button */}
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={() => setShowPopoutTimer(true)}
+              className="flex items-center space-x-2 bg-gradient-to-r from-violet-500 to-purple-600 text-white py-2 px-4 rounded-lg hover:from-violet-600 hover:to-purple-700 transition-all duration-200 text-sm font-semibold"
+              title="Open timer in a draggable window"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Pop-out Timer</span>
+            </button>
+          </div>
+
           {/* Session Actions */}
           {timer.currentTime === 0 && (
             <div className="space-y-3">
