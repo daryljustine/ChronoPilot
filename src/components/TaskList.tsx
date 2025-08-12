@@ -156,6 +156,49 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
     return checkFrequencyDeadlineConflict(taskForCheck, userSettings);
   }, [editFormData.deadline, editFormData.estimatedHours, editFormData.estimatedMinutes, editFormData.targetFrequency, editFormData.deadlineType, editFormData.minWorkBlock, editFormData.startDate, userSettings]);
 
+  // Calculate total time from session-based estimation
+  const calculateSessionBasedTotal = React.useMemo(() => {
+    if (editFormData.estimationMode !== 'session' || !editFormData.deadline || editFormData.deadlineType === 'none') {
+      return 0;
+    }
+
+    const sessionDuration = parseInt(editFormData.sessionDurationHours || '0') + parseInt(editFormData.sessionDurationMinutes || '0') / 60;
+    if (sessionDuration <= 0) return 0;
+
+    const startDate = new Date(editFormData.startDate || new Date().toISOString().split('T')[0]);
+    const deadlineDate = new Date(editFormData.deadline);
+    const timeDiff = deadlineDate.getTime() - startDate.getTime();
+    const totalDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1; // +1 to include start day
+
+    let workDays = 0;
+    switch (editFormData.targetFrequency) {
+      case 'daily':
+        workDays = totalDays;
+        break;
+      case '3x-week':
+        workDays = Math.floor((totalDays / 7) * 3) + Math.min(3, totalDays % 7);
+        break;
+      case 'weekly':
+        workDays = Math.ceil(totalDays / 7);
+        break;
+      case 'flexible':
+        workDays = Math.ceil(totalDays * 0.7); // Assume 70% of days for flexible
+        break;
+      default:
+        workDays = totalDays;
+    }
+
+    return sessionDuration * workDays;
+  }, [editFormData.estimationMode, editFormData.sessionDurationHours, editFormData.sessionDurationMinutes, editFormData.deadline, editFormData.deadlineType, editFormData.startDate, editFormData.targetFrequency]);
+
+  // Get effective total time (either direct input or calculated from sessions)
+  const getEffectiveTotalTime = () => {
+    if (editFormData.estimationMode === 'session') {
+      return calculateSessionBasedTotal;
+    }
+    return (editFormData.estimatedHours || 0) + ((editFormData.estimatedMinutes || 0) / 60);
+  };
+
   const getUrgencyColor = (deadline: string): string => {
     const now = new Date();
     const deadlineDate = new Date(deadline);
