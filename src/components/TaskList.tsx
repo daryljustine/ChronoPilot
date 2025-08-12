@@ -263,6 +263,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask, onDeleteTask, 
       maxSessionLength: task.maxSessionLength || 2,
       isOneTimeTask: task.isOneTimeTask || false,
       startDate: task.startDate || today,
+      estimationMode: 'total',
+      sessionDurationHours: '',
+      sessionDurationMinutes: '30',
     });
     setShowAdvancedOptions(false);
   };
